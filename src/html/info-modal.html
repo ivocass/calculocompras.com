@@ -1,0 +1,65 @@
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalTitle">{{infoModalTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i class="fa fa-times modal-close-icon" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body my-3">
+
+                <div id="infoModalCompra" class="d-none info-modal-content" data-title="Compras">
+                    <p class="mb-4">Para entrar en el régimen "Puerta a puerta", el monto de la compra no debe superar los U$S 200, ni pesar más de 2kg. 
+                        Si la compra supera esos valores, se deberá retirar en la sucursal indicada por el telegrama de Correo Argentino.</p>
+
+                    <a href="http://www.afip.gob.ar/puertaapuerta/puertaApuerta.asp#ver" target="_blank">Ver más información en el sitio de AFIP</a>
+
+                    <hr class="my-4">
+
+                    <p class="mb-4">Las cotizaciones de las monedas se actualizan automáticamente.</p>
+
+                    <p class="">Podés ver y cambiar los valores en <span class="fake-link" v-on:click="openSettings()" data-dismiss="modal">Configuración</span></p>
+                </div>
+
+
+                <div id="infoModalAFIP" class="d-none info-modal-content" data-title="Impuesto AFIP">
+                    <p class="mb-3">La AFIP tributa un 50% sobre el valor de la compra.</p>
+                    <p class="mb-3">Si usás la franquicia anual, se le descuentan U$S25 a ese impuesto.</p>
+
+                    <a href="http://www.afip.gob.ar/puertaapuerta/puertaApuerta.asp#ver" target="_blank">Ver más información en el sitio de AFIP</a>
+                </div>
+
+                <div id="infoModalCorreo" class="d-none info-modal-content" data-title="Gestión Correo">
+                    <p class="mb-3">Correo Argentino cobra $120 por gestionar el envio.</p>
+                    <p class="mb-3">El cargo se abona si el producto se envia a tu domicilio o si lo pasás a retirar por sucursal.</p>
+
+                    <a href="https://www.correoargentino.com.ar/puerta-puerta/preguntas-frecuentes" target="_blank">Ver más información en el sitio de Correo Argentino</a>
+                </div>
+
+                <div id="infoModalFranquicia" class="d-none info-modal-content" data-title="Franquicia Anual">
+                    <p class="mb-3">AFIP otorga una franquicia de U$S25 por año calendario.</p>
+                    <p class="mb-3">Esa franquicia es un descuento sobre el impuesto del 50%.</p>
+
+                    <a href="http://www.afip.gob.ar/puertaapuerta/puertaApuerta.asp#ver" target="_blank">Ver más información en el sitio de AFIP</a>
+                </div>
+
+                <div id="infoModalExtensions" class="d-none info-modal-content" data-title="Extensión / Add-on">
+                    <div class="d-flex justify-content-center w-100">
+                        <img src="images/extension01.png" alt="Imágen de la extensión de Chrome">
+                    </div>                    
+                    <br>
+                    <p>Para <a href="https://chrome.google.com/webstore/detail/calculocompras" target="_blank" v-on:click="onExtensionClicked('Chrome')">Chrome</a></p>
+                    <p>Para <a href="https://addons.mozilla.org/es/firefox/addon/calculocompras/" target="_blank" v-on:click="onExtensionClicked('Firefox')">Firefox</a></p> 
+                    <hr>
+                    <a href="https://github.com/ivocass/calculocompras-extension" target="_blank">Código fuente en GitHub</a>
+                </div>
+
+                <!-- <div id="infoModalQuote" class="d-none" data-title="Frase del día">
+                    <p class="mb-3 text-center"><em>"{{quote}}"</em></p>
+                </div> -->
+
+            </div>
+        </div>
+    </div>
+</div>

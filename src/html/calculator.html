@@ -1,0 +1,195 @@
+<div id="calculator">			
+        
+    <div class="calculator-content">
+
+        <div id="section-purchase" class="main-section" v-bind:class="{'d-none':alternativeDesignEnabled && alternateDetailsEnabled}">
+
+            <div class="title-area">
+                <h1 class="title" aria-label="Sección para elegir la moneda e ingresar el monto de la compra">COMPRA</h1>
+            </div>
+
+            <div class="content-area flex-column">
+
+
+                <div id="compra-stuff" class="d-flex" v-bind:class="{'alternate-design-offset':alternativeDesignEnabled}">
+
+                    <div class="arrow-container">
+                        <div class="arrow"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                    </div>
+                    
+
+                    <select id="currency-select" class="form-control mr-2" v-on:change="onCurrencySelected($event)" aria-label="Seleccioná la moneda de tu compra (los valores pueden actualizarse y modificarse en 'Configuración')">
+                        <option aria-label="Dólar estadounidense">{{selectOptionUSD}}</option>
+                        <option aria-label="Euro">{{selectOptionEUR}}</option>
+                        <option aria-label="Libra esterlina">{{selectOptionGBP}}</option>
+                        <option aria-label="Peso argentino">{{selectOptionARS}}</option>						
+                    </select>
+                    
+
+                    <input class="form-control price-input" type="number" id="price-compra-input" aria-label="El monto de la compra">
+
+                    <i v-if="showInfoIcons" class="fa fa-question-circle info-icon mb-3" data-toggle="modal" data-target="#infoModal" v-on:click="showInfoModal('#infoModalCompra')" 
+                        aria-hidden="true" title="Click para ver información sobre compras"></i>
+                    
+                </div>
+
+                <button v-if="alternativeDesignEnabled" id="see-details-btn" class="btn-transparent" v-on:click="showDetailsSection()">
+                    Ver detalle
+                </button>
+                
+            </div>
+
+        </div>
+
+        <div id="section-expenses" class="main-section" 
+            v-bind:class="{'d-none':alternativeDesignEnabled, 'd-flex':alternativeDesignEnabled && alternateDetailsEnabled}">
+
+            <button v-if="alternateDetailsEnabled" id="close-details-btn" class="btn-transparent" title="Volver" v-on:click="hideDetailsSection()">
+                <i class="fa fa-arrow-left text-white" aria-hidden="true"></i>
+            </button>
+
+            <div class="title-area">
+                <h1 class="title" aria-label="Sección que detalla los costos de 'tributo de AFIP (50% sobre el valor de la compra)', 
+                                    'Gestión de Correo Argentino ($120)' y 'Franquicia Anual de AFIP (25 dólares que se le pueden descontar una vez al año al tributo de AFIP'). Los valores mencionados pueden estar desactualizados.'">
+                    DETALLE
+                </h1>
+            </div>
+
+            <div class="content-area">
+
+                <div class="d-flex mt-3">
+
+                    <div v-bind:class="{'d-none':!showCheckboxes}" class="flex-column checkboxes-column mr-2">
+                               
+                        <div class="custom-checkbox" aria-label="Checkbox para la compra en pesos (deshabilitado por ser obligatorio)">
+                            <input type="checkbox" id="cbox1" name="cc" :checked="showCompraPesos" disabled/>
+                            <label for="cbox1">
+                                <span class="background disabled">
+                                    <i class="fa fa-check checkbox-check" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="custom-checkbox" aria-label="Checkbox para el tributo de AFIP (deshabilitado por ser obligatorio)">
+                            <input type="checkbox" id="cbox2" name="cc" :checked="showAfip" disabled/>
+                            <label for="cbox2">
+                                <span class="background disabled">
+                                    <i class="fa fa-check checkbox-check" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="custom-checkbox" aria-label="Checkbox para la gestión de Correo Argentino (deshabilitado por ser obligatorio)">
+                            <input type="checkbox" id="cbox3" name="cc" :checked="showCorreo" disabled/>
+                            <label for="cbox3">
+                                <span class="background disabled">
+                                    <i class="fa fa-check checkbox-check" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="custom-checkbox" aria-label="Seleccionar si querés que se aplique la franquicia anual sobre el tributo de AFIP">
+                            <input type="checkbox" id="cbox4" name="cc" :checked="showFranquicia" v-on:click="onLabelClicked('franquicia')"/>
+                            <label for="cbox4">
+                                <span class="background">
+                                    <i class="fa fa-check checkbox-check" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                        </div>
+                                
+                    </div>							
+
+                    <div class="flex-column pl-0">
+                        
+                        <div class="d-flex">
+                            
+                            <span v-if="currency.getId() != 'ARS'" id="label-pesos" class="label">
+                                Compra en pesos										
+                            </span>
+
+                            <span v-if="currency.getId() == 'ARS'" id="label-dolares" class="label">
+                                Compra en dólares										
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex">
+
+                            <span id="label-afip" class="label" v-bind:class="{disabled:!showAfip}" title="50%">
+                                Impuesto AFIP											
+                            </span>
+
+                            <i v-if="showInfoIcons" class="fa fa-question-circle" data-toggle="modal" data-target="#infoModal" v-on:click="showInfoModal('#infoModalAFIP')" aria-hidden="true" title="Click para ver información sobre el impuesto de AFIP"></i>
+
+                        </div>
+                        
+                        <div class="d-flex">
+                            
+                            <span id="label-correo" class="label" v-bind:class="{disabled:!showCorreo}">
+                                Gestión Correo										
+                            </span>
+                            
+                            <i v-if="showInfoIcons" class="fa fa-question-circle" data-toggle="modal" data-target="#infoModal" v-on:click="showInfoModal('#infoModalCorreo')" aria-hidden="true" title="Click para ver información sobre el cargo de gestión de Correo Argentino"></i>
+
+                        </div>
+                        
+                        <div class="d-flex">
+
+                            <span id="label-franquicia" class="label cursor-pointer no-select" v-bind:class="{disabled:!showFranquicia || !showAfip}" v-on:click="onLabelClicked('franquicia')">
+                                Franquicia anual										
+                            </span>
+
+                            <i v-if="showInfoIcons" class="fa fa-question-circle" data-toggle="modal" data-target="#infoModal" v-on:click="showInfoModal('#infoModalFranquicia')" aria-hidden="true" title="Click para ver información sobre la franquicia anual"></i>
+
+                        </div>
+
+                        
+                    </div>
+
+                    <div class="flex-column pl-0 price-col ml-2">
+
+                        <ul>
+                            <li class="label" id="currency-conversion-text" v-bind:class="{invisible:!showCompraPesos}" aria-label="El monto de la compra expresada en pesos">{{valCurrencyConversionText}}</li>
+                            <li class="label" id="price-afip" v-bind:class="{invisible:!showAfip}" title="50%" aria-label="El monto del tributo de AFIP">${{valAfip}}</li>
+                            <li class="label" id="price-correo" v-bind:class="{invisible:!showCorreo}" aria-label="El monto de gestión de Correo Argentino">${{valCorreo}}</li>
+                            <li class="label" id="price-franquicia" v-bind:class="{invisible:!showFranquicia || !showAfip}" aria-label="El monto de la franquicia anual">${{valFranquicia}}</li>
+                        <ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="section-total" class="main-section" aria-label="Sección que detalla el total estimado, basado en los montos expresados en las secciones 'Compra' y 'Gastos'">
+
+            <div class="title-area">
+                <h1 class="title">TOTAL</h1>
+            </div>
+
+            <div class="content-area flex-column">
+
+                    <h1 id='price-total' class="title" v-bind:class="{'half-opacity':isCompraOutOfRange}" aria-label="Valor total (estimado)">
+                        <span v-if="valCompra != 0" class="title" >$</span>
+                        <span id="val-total">{{valTotal}}</span>
+                        
+                    </h1>
+
+                    <p v-if="isCompraOutOfRange" id="compra-out-of-range-text" aria-label="Este texto solo se muestra cuando la compra supere el límite de AFIP para compras 'Puerta a Puerta'">								
+                        Ojo, superaste los U$S{{valCompraMax}}
+
+                        <i v-if="showInfoIcons" class="fa fa-exclamation-circle cursor-pointer" data-toggle="modal" data-target="#infoModal" v-on:click="showInfoModal('#infoModalCompra')" 
+                        aria-hidden="true" title="Click para ver información sobre compras"></i>
+                    </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    @@include('./info-modal.html')    
+
+</div>

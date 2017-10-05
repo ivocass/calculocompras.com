@@ -1,0 +1,109 @@
+#welcome{
+
+    $horizontal-bp : 900px;
+
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;    
+    left: 0;
+    top: 0;
+    background-color: $appBackgroundColor;
+    // background: transparent linear-gradient(to right, rgb(63, 195, 128), rgb(63, 195, 162)) repeat scroll 0% 0%;
+    z-index: 2;
+    
+    @media(max-width: $horizontal-bp){
+        flex-direction: column;
+    }
+
+    .panel-left, .panel-right{
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .panel-left{
+        flex-direction: column;
+    }
+
+    .panel-right{
+        background-color: white;
+    }
+
+    .welcome-content{
+        
+        .bottom-content{
+        position: absolute;
+        height: 50%;
+        bottom: 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        
+
+        @media(max-width: $horizontal-bp){
+            position: initial;
+        }
+
+        @media(max-height: 500px){
+            position: initial;
+        }
+        }
+    }
+    
+    
+    .title{
+        color: white;
+        text-align: center;
+        font-weight: 100;
+        font-family: 'Comfortaa', cursive;
+    }
+
+    #logo{
+        width: 75px;
+        margin-bottom: 50px;
+    }
+
+    img{
+        width: 130px;
+        image-rendering: -webkit-optimize-contrast;
+        margin-bottom: 20px;
+    }
+
+    .description{
+        font-weight: bold;
+        color:$appBackgroundColor;
+        text-align: center;
+    }    
+
+    .see-terms-btn{
+        
+        cursor: pointer;
+        
+        color: $appBackgroundColor;
+        text-decoration: underline;
+
+        &:hover{
+        background-color: white;
+        color: $appBackgroundColor;        
+        }
+    }
+
+    .custom-checkbox{
+
+        span{
+        color: $appBackgroundColor;
+        }
+
+        .background{
+        margin-right: 2px;
+        background-color: $appBackgroundColor;
+
+            i{
+                color: white !important;
+            }
+        }
+    }
+}

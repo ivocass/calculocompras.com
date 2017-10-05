@@ -1,0 +1,149 @@
+<div id="settings" v-bind:class="{'d-none':!showingSettings}">
+
+    <div class="panel-left">				
+
+        <h1>Configuración</h1>
+
+    </div>
+
+    <div class="settings-body">
+
+        <button type="button" class="btn-icon close" aria-label="Close" v-on:click="closeSettings()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+            
+        <div class="content">
+            
+            <div class="settings-row">
+                <p>Color</p>
+
+                <div class="ml-auto">
+                    <button class="btn color-picker-btn emerald" title="Emerald" v-on:click="setMainColor('#10c77b')">
+                        <i v-if="mainColor == '#10c77b'" class="fa fa-check text-white" aria-hidden="true"></i>
+                    </button>
+
+                    <button class="btn color-picker-btn carbon" title="Carbon" v-on:click="setMainColor('#292b2c')">
+                        <i v-if="mainColor == '#292b2c'" class="fa fa-check text-white" aria-hidden="true"></i>
+                    </button>
+
+                    <button class="btn color-picker-btn rose" title="Chestnut Rose" v-on:click="setMainColor('#D24D57')">
+                        <i v-if="mainColor == '#D24D57'" class="fa fa-check text-white" aria-hidden="true"></i>
+                    </button>
+
+                    <button class="btn color-picker-btn blue" title="Material Blue" v-on:click="setMainColor('#3367d6')">
+                        <i v-if="mainColor == '#3367d6'" class="fa fa-check text-white" aria-hidden="true"></i>
+                    </button>
+                </div>
+                
+            </div>
+
+            <div class="settings-row">
+                <p>Diseño minimalista <i class="fa fa-info-circle ml-2 cursor-default text-muted" title="La sección 'DETALLES' se esconde y se invierten los colores de la sección 'TOTAL'"></i></p>
+
+                <div class="ml-auto">
+                    <div class="slider-toggle">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sliderToggleDesign" 
+                        v-on:click="toggleDesign()">
+                        <label class="onoffswitch-label" for="sliderToggleDesign"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-row">
+
+                <p aria-label="Sirve para esconder de la app todos los botones con signo de pregunta">Mostrar íconos de información</p>
+
+                <div class="ml-auto">
+                    <div class="slider-toggle">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sliderToggleInfo" 
+                        v-on:click="toggleInfoIcons()">
+                        <label class="onoffswitch-label" for="sliderToggleInfo"></label>
+                    </div>
+
+                </div>
+                
+            </div>
+
+            <div class="settings-row">
+
+                <p aria-label="Sirve para esconder de la app todos los checkboxes de la sección 'Gastos' (ya que también se puede cliquear sobre los textos)">Mostrar checkboxes</p>
+
+                <div class="ml-auto">
+                    <div class="slider-toggle">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sliderToggleCheckboxes" 
+                        v-on:click="toggleCheckboxes()">
+                        <label class="onoffswitch-label" for="sliderToggleCheckboxes"></label>
+                    </div>
+                </div>
+                
+            </div>
+                    
+
+            <div class="settings-row settings-row-currencies" v-for="currency in currencies"  aria-label="Sección para actualizar y modificar monedas">
+
+                <div class="d-flex align-items-center w-100">
+                    <p>{{currency.getName()}}</p>
+
+                    <span class="mx-1">$</span>
+
+                    <input class="form-control settings-input automatic" v-bind:class="{'d-none':currency.getHasCustomVal()}" 
+                        type="number" :value="currency.getCurrentVal()" title="Valor automático" disabled aria-label="El valor actual (no se puede editar ya que es proveído automáticamente)"> 
+                        
+                    <input :id="'customCurrencyInput' + currency.getId()" class="form-control settings-input" v-bind:class="{'d-none':!currency.getHasCustomVal()}" 
+                        type="number" :value="currency.getCurrentVal()" title="Valor modificado"  
+                        v-on:change="onCurrencyModified($event, currency.getId())" aria-label="Este valor sí puede ser modificado"> 
+
+                    <span class="ml-2" v-bind:class="{'d-none':currency.getHasCustomVal()}">
+                        (automático -
+                        <a :href="'https://finance.yahoo.com/quote/' + currency.getId() + 'ars=x?ltr=1'" target="_blank" title="Yahoo Fianance">fuente</a>
+                        )
+                    </span>
+
+                    <span class="ml-2" v-bind:class="{'d-none':!currency.getHasCustomVal()}">(modificado)</span>
+
+                    <div class="ml-auto" aria-label="Con este switch se puede cambiar de valor automático a modificado para la moneda (chequeado es 'automático')">
+                        <div class="slider-toggle">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" :id="'sliderToggle' + currency.getId()" :checked="!currency.getHasCustomVal()"
+                            v-on:click="toggleCustomCurrency(currency.getId())">
+                            <label class="onoffswitch-label" :for="'sliderToggle' + currency.getId()"></label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <p class="last-update">Última actualización: 
+
+                    <span v-if="currency.getHasCustomVal()">N/D</span>
+
+                    <span v-if="!currency.getHasCustomVal() && currency.getLastUpdateDate() != -1" class="ml-1">
+                        {{currency.getLastUpdateDateReadable()}}
+                    </span>
+
+                    <button v-if="!currency.getHasCustomVal()" class="btn btn-icon ml-1" title="Actualizar" v-on:click="updateCurrency(currency.getId())" aria-label="Click para actualizar el valor de la moneda con Yahoo Finance">
+                        <i class="fa fa-refresh currency-refresh" aria-hidden="true"></i>
+                    </button>								
+                </p>
+                
+            </div>
+
+            <div class="settings-row">
+                <button class="mb-4 btn-transparent fake-link" data-toggle="modal" data-target="#termsModal" >Ver términos y condiciones</button>
+            </div>
+                
+        </div>
+
+        <!-- <footer class="d-flex justify-content-center contact-link-container">
+            <a id="contact-link" href="https://www.reddit.com/message/compose/?to=IvoCass" target="_blank" title="Contacto">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+
+            
+        </footer> -->
+
+        <p id="version" aria-label="Versión de la app">v{{version}}</p>
+
+
+    </div>
+
+</div>

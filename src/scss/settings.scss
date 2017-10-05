@@ -1,0 +1,168 @@
+
+
+
+#settings{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-width: 350px;
+    height: 100%;    
+    overflow: hidden;
+    display: flex;
+
+    $settings-horizontal-bp: 920px;
+
+    @media(max-width: $settings-horizontal-bp){
+        flex-direction: column;
+    }
+    
+    .panel-left{
+        background-color: $appBackgroundColor;        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        height: 100%;
+
+        h1{
+            font-weight: 100;
+            color: $mainFontColor;
+        }
+    }
+
+    .settings-body{
+        
+        display: flex;
+        flex: 1;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        overflow: auto;
+        overflow-x: hidden;        
+        padding-top: 50px;
+        padding-bottom: 50px;
+        background-color: #f1f1f1;
+        
+        
+
+        @media(min-height: 820px){
+            justify-content: center;
+        }
+
+        @media(max-width: $settings-horizontal-bp){
+            flex: 4;
+        }
+
+        .close{
+            position: absolute;
+            right: 40px;
+            top: 25px;
+            color: grey;
+
+            @media(max-width: $settings-horizontal-bp){
+                color: white;
+            }
+        }
+
+        .content{
+            width: 50%;
+            min-width: 340px;
+            max-width: 670px;
+        }
+
+        .settings-row{
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+
+            p{
+                margin: 0;
+            }
+
+            .settings-input{
+                width: 70px;
+                padding: 5px 0;
+                text-align: center;
+                box-shadow: none; //ffox
+
+                &.automatic{
+                    color: grey;
+                }
+
+                &.input-error{
+                    background-color: #e84e4e;
+                    color: white;
+                }
+            }
+
+            #dolar-input-auto{
+                color: grey;
+            }
+
+            &.settings-row-currencies{
+                flex-direction: column;
+                align-items: flex-start;
+
+                .last-update{
+                    color: #9e9e9e;
+
+                    .currency-refresh{
+                        color:#449d44;
+                    }
+                }
+            }
+
+        }
+
+        .color-picker-btn{
+
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            padding: 0;
+
+            &.rose{
+                background-color: #D24D57;
+            }
+
+            &.emerald{
+                background-color: #3FC380;
+            }
+
+            &.carbon{
+                background-color: #292b2c;
+            }
+
+            &.blue{
+                background-color: #3367d6;
+            }
+        }
+
+        .contact-link-container{
+            width: calc(100% - 60px);
+            color: #4975f7;
+            
+            #contact-link{
+                i{
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        
+    }
+
+    #version{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        color: #9a9a9a;
+        margin: 20px;
+
+        @media(max-width: 500px){
+            display: none;
+        }
+    }
+
+}

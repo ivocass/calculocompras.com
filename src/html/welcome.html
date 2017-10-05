@@ -1,0 +1,50 @@
+<div id="welcome" v-if="!hasAcceptedTerms">
+
+    <div class="panel-left">
+
+        <img id="logo" src="images/logo.png">
+
+        <h1 class="title">CalculoCompras</h1>
+
+    </div>
+
+    <div class="panel-right">
+
+        <div class="welcome-content">
+
+            <div class="d-flex align-items-center flex-column">
+                
+                <img src="images/boat.png">
+                
+                <p class="description mb-5">Te ayudamos a estimar los gastos y el valor final <br>de las compras "Puerta a puerta"</p>
+            </div>
+
+            <div class="bottom-content">
+
+                <button class="mb-4 btn-transparent see-terms-btn" data-toggle="modal" data-target="#termsModal" >
+                    Ver términos y condiciones
+                </button>
+
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="termsCheckbox" name="cc" :checked="false" aria-label="Seleccionar si aceptás los términos y condiciones" v-on:click="onTermsCheckboxClicked()"/>
+                    <label for="termsCheckbox">
+                        <span class="background">
+                            <i class="fa fa-check checkbox-check" aria-hidden="true"></i>
+                        </span>
+                        <span class="cursor-pointer">Acepto los términos y condiciones.</span>
+                    </label>
+                </div>
+
+                <div class="d-flex justify-content-end w-100 mt-4">
+                    <button id="btnWelcomeContinue" class="btn btn-welcome disabled" v-on:click="onWelcomeContinueClicked()">CONTINUAR</button>
+                </div>
+                
+            </div>
+
+            
+
+        </div>
+
+    </div>
+    
+</div>

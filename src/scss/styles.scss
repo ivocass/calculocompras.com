@@ -1,0 +1,149 @@
+
+
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,400');
+// @import url('https://fonts.googleapis.com/css?family=Poiret+One');
+@import url('https://fonts.googleapis.com/css?family=Comfortaa');
+@import "variables";
+@import "components";
+@import "./calculator";
+@import "./settings";
+@import "./welcome";
+
+
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  
+  font-family: 'Roboto';
+  animation: fadein 2s;
+  
+  
+  @keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
+#app{
+  width: 100%;
+  height: 100%;
+  
+  #termsModal{
+
+    .modal-dialog{
+      width: 70%;
+      max-width: 800px;
+
+      @media(max-width: 800px){
+        width: 100%;
+      }
+    }
+
+    .terms{
+      white-space: pre-line;
+      height: 400px;
+      overflow: auto;
+      border: 1px solid #cacaca;
+    }
+  }
+
+  .half-opacity{
+    opacity: 0.5;
+  }
+
+  .btn{
+    border-radius: 0px;
+  }
+
+  .btn-icon{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .btn-transparent{
+    background: none;
+    border: none;
+  }
+  
+  .btn-white{
+    background-color: white;
+    border-color: #b9b9b9;
+  }
+
+  .btn-welcome{
+    color: white;
+    background-color: $appBackgroundColor;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    cursor: pointer;
+
+    &.disabled{
+      cursor: not-allowed;
+      background-color: #c6c6c6;
+    }
+  }
+
+  .cursor-pointer{
+    cursor: pointer;
+  }
+
+  .cursor-default{
+    cursor: default;
+  }
+  
+  .fake-link{
+    color: #0087ff;
+    cursor: pointer;
+
+    &:hover{
+      text-decoration: underline;
+    }      
+  }
+
+  .no-select{
+    user-select: none;
+    -moz-user-select: none
+  }
+  
+  #app-links{
+    position: absolute;
+    right: 33px;
+    top: 19px;    
+
+    button{
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      @media(max-width: $vertical-breakpoint){
+        color: white !important;
+      }
+
+      i{
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+
+  // hide input arrows in ffox
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+  
+  // hide input arrows in chrome
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+      /* display: none; <- Crashes Chrome on hover */
+      -webkit-appearance: none;
+      margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+}
+
+

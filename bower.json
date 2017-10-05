@@ -1,0 +1,20 @@
+{
+  "name": "calcu",
+  "description": "Calculadora de envios puerta a puerta",
+  "main": "src/index.html",
+  "authors": [
+    "ivocass"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {},
+  "devDependencies": {}
+}

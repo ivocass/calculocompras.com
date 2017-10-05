@@ -1,0 +1,310 @@
+
+
+#calculator{
+  width: 100%;
+  height: 100%;
+  
+  .calculator-content{
+    display: flex;
+    width: 100%;
+    height: 100%;
+
+    @media(max-width: $vertical-breakpoint){
+      flex-direction: column;
+    }
+
+    .main-section{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white;
+
+      .title-area{
+        flex:1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;        
+
+        .title{
+          margin-bottom: 0;
+          letter-spacing: 18px;
+          font-size: 2.5rem;
+
+          @media(max-width: $vertical-breakpoint){
+            font-size:1.5rem;
+          }
+        }        
+      }
+
+      .content-area{
+        flex:3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .custom-checkbox{
+          margin-bottom: 6px;          
+        }
+      }      
+    }
+
+    #section-expenses{
+
+      #close-details-btn{
+        position: absolute;
+        top: 19px;
+        left: 13px;
+        cursor: pointer;
+
+        i{
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    #section-total{
+
+      #price-total{
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      #compra-out-of-range-text{
+        text-align: center;
+        width: 65%;
+        margin-top: 30px;
+      }
+    }
+
+    .flex-column{
+      display: flex;
+    }
+
+    .fa{
+      font-size: 1.1rem;
+    }
+
+    .summary{
+      margin: 30px 75px;
+
+      @media(max-width: 770px){
+        margin: 30px 50px;
+      }
+
+      @media(max-width: 500px){
+        margin: 30px 20px;
+      }
+    }
+
+    #compra-stuff{
+
+      &.alternate-design-offset{
+        margin-top: 38px;
+      }
+
+      .form-control{
+        border: none;
+        height: 55px;
+        font-size: 2.5rem;
+        font-weight: bold;
+        letter-spacing: 2px;
+        border-radius: 0;
+        color: #464646;
+
+        &.price-input{
+          // for ie
+          @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+            padding-top: 5px;
+          }
+        }
+      }
+
+      select{
+        padding-top: 3px;
+        padding-left: 18px;
+        width: 160px;
+        cursor: pointer;
+
+        @-moz-document url-prefix() {
+          padding-top: 4px;
+        }
+
+        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+          padding-top: 10px;
+        }
+
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        
+        option{
+          font-size: 2rem;          
+        }
+      }
+
+      .arrow-container{
+        position: absolute;
+        pointer-events: none;
+
+        .arrow{
+          width: 47px;
+          height: 35px;
+          position: relative;
+          left: 111px;
+          top: 11px;
+          background-color: white;
+          pointer-events: none;
+  
+          i{
+            font-size: 1.8rem;
+            color: #464646;
+            position: relative;
+            top: 5px;
+            left: 12px;
+            background-color: white;
+            height: 33px;
+          }
+        }
+      }
+
+      input{
+        width: 160px;
+        padding-left: 11px;
+        padding-top: 9px;
+      }
+
+      .info-icon{
+        margin-left: 0;
+        color: white;
+        font-size: 1.5rem;
+        height: 26px;
+        position: relative;
+        top: 10px;
+        left: 8px;
+        cursor: pointer;
+      }      
+    }
+    
+    #see-details-btn{
+      margin-top: 15px;
+      color: white;
+      position: relative;
+      left: 108px;
+      cursor: pointer;
+
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+
+    
+    .label{
+      color: $mainFontColor;
+      font-size: 1.1rem;
+      list-style: none;
+    }
+
+    .fa-question-circle{
+      color: $mainFontColor;
+      font-size: 1.1rem;
+      margin-top: 5px;
+      position: relative;
+      cursor: pointer;
+      margin-left: 7px;
+      margin-right: 15px;
+    }  
+
+    #label-compra{
+      cursor: default;
+    }
+
+    .currency{
+      cursor: default;
+    }
+
+    .label{
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .total{
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .disabled{
+      text-decoration: line-through;
+    }
+
+    hr{
+      border-color: $mainFontColor;
+      width: 80%
+    }
+
+    
+
+    @media(max-width: 770px){
+      
+      hr{
+        width: 100%;
+      }
+    }
+
+    #hr-main{
+      margin-top: 32px;
+      margin-bottom: 19px;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+  }
+}
+
+// todo: move to its own file
+.modal{
+  background-color: rgba(255, 255, 255, 0.5);
+  font-family: 'Roboto';
+
+  .modal-dialog {
+    min-height: calc(100vh - 60px);
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: auto;
+
+    .modal-header{
+      background-color: $appBackgroundColor;
+      color: white;
+    }
+
+    .modal-title{
+      display: flex;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .modal-close-icon{
+      color: white;
+    }    
+  }
+
+  #infoModalExtensions{
+
+    img{
+      padding: 10px;
+      background-color: rgb(84, 84, 84);
+    }
+    
+  }
+  
+}

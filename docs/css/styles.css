@@ -1,0 +1,527 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,400");
+@import url("https://fonts.googleapis.com/css?family=Comfortaa");
+/* global variables */
+.custom-checkbox input[type="checkbox"] {
+  display: none; }
+
+.custom-checkbox input[type="checkbox"] + label {
+  margin-bottom: 2px; }
+  .custom-checkbox input[type="checkbox"] + label .background {
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    margin: -2px 10px 0 0;
+    vertical-align: middle;
+    background-color: white;
+    cursor: pointer; }
+    .custom-checkbox input[type="checkbox"] + label .background.disabled {
+      background-color: #ddd;
+      cursor: not-allowed !important; }
+      .custom-checkbox input[type="checkbox"] + label .background.disabled i {
+        color: #b0b0b0  !important; }
+    .custom-checkbox input[type="checkbox"] + label .background .checkbox-check {
+      display: none; }
+
+.custom-checkbox input[type="checkbox"]:checked + label .checkbox-check {
+  display: inline-block;
+  color: #3FC380;
+  position: relative;
+  top: -3px;
+  left: 2.5px;
+  font-size: 0.9rem !important; }
+
+@-moz-document url-prefix() {
+  .custom-checkbox input[type="checkbox"]:checked + label .checkbox-check {
+    top: -4px; } }
+
+.slider-toggle {
+  width: 40px;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; }
+  .slider-toggle .onoffswitch-checkbox {
+    display: none; }
+  .slider-toggle .onoffswitch-label {
+    width: 38px;
+    height: 16px;
+    line-height: 20px;
+    padding: 0;
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 30px;
+    background-color: #d5d5d5;
+    transition: background-color 0.3s ease-in; }
+  .slider-toggle .onoffswitch-label:before {
+    content: "";
+    width: 22px;
+    height: 23px;
+    display: block;
+    box-shadow: 2px 2px 5px #888888;
+    position: absolute;
+    top: -3px;
+    left: 0;
+    border-radius: 30px;
+    background: #bdbdbd;
+    transition: all 0.1s ease-in 0s; }
+  .slider-toggle .onoffswitch-checkbox:checked + .onoffswitch-label {
+    background: #7cbcbf; }
+  .slider-toggle .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+    left: 17px;
+    background: #1d8b90; }
+
+#calculator {
+  width: 100%;
+  height: 100%; }
+  #calculator .calculator-content {
+    display: flex;
+    width: 100%;
+    height: 100%; }
+    @media (max-width: 1260px) {
+      #calculator .calculator-content {
+        flex-direction: column; } }
+    #calculator .calculator-content .main-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white; }
+      #calculator .calculator-content .main-section .title-area {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end; }
+        #calculator .calculator-content .main-section .title-area .title {
+          margin-bottom: 0;
+          letter-spacing: 18px;
+          font-size: 2.5rem; }
+          @media (max-width: 1260px) {
+            #calculator .calculator-content .main-section .title-area .title {
+              font-size: 1.5rem; } }
+      #calculator .calculator-content .main-section .content-area {
+        flex: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
+        #calculator .calculator-content .main-section .content-area .custom-checkbox {
+          margin-bottom: 6px; }
+    #calculator .calculator-content #section-expenses #close-details-btn {
+      position: absolute;
+      top: 19px;
+      left: 13px;
+      cursor: pointer; }
+      #calculator .calculator-content #section-expenses #close-details-btn i {
+        font-size: 1.5rem; }
+    #calculator .calculator-content #section-total #price-total {
+      font-weight: bold;
+      letter-spacing: 1px; }
+    #calculator .calculator-content #section-total #compra-out-of-range-text {
+      text-align: center;
+      width: 65%;
+      margin-top: 30px; }
+    #calculator .calculator-content .flex-column {
+      display: flex; }
+    #calculator .calculator-content .fa {
+      font-size: 1.1rem; }
+    #calculator .calculator-content .summary {
+      margin: 30px 75px; }
+      @media (max-width: 770px) {
+        #calculator .calculator-content .summary {
+          margin: 30px 50px; } }
+      @media (max-width: 500px) {
+        #calculator .calculator-content .summary {
+          margin: 30px 20px; } }
+    #calculator .calculator-content #compra-stuff.alternate-design-offset {
+      margin-top: 38px; }
+    #calculator .calculator-content #compra-stuff .form-control {
+      border: none;
+      height: 55px;
+      font-size: 2.5rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      border-radius: 0;
+      color: #464646; }
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        #calculator .calculator-content #compra-stuff .form-control.price-input {
+          padding-top: 5px; } }
+    #calculator .calculator-content #compra-stuff select {
+      padding-top: 3px;
+      padding-left: 18px;
+      width: 160px;
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none; }
+
+@-moz-document url-prefix() {
+  #calculator .calculator-content #compra-stuff select {
+    padding-top: 4px; } }
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        #calculator .calculator-content #compra-stuff select {
+          padding-top: 10px; } }
+      #calculator .calculator-content #compra-stuff select option {
+        font-size: 2rem; }
+    #calculator .calculator-content #compra-stuff .arrow-container {
+      position: absolute;
+      pointer-events: none; }
+      #calculator .calculator-content #compra-stuff .arrow-container .arrow {
+        width: 47px;
+        height: 35px;
+        position: relative;
+        left: 111px;
+        top: 11px;
+        background-color: white;
+        pointer-events: none; }
+        #calculator .calculator-content #compra-stuff .arrow-container .arrow i {
+          font-size: 1.8rem;
+          color: #464646;
+          position: relative;
+          top: 5px;
+          left: 12px;
+          background-color: white;
+          height: 33px; }
+    #calculator .calculator-content #compra-stuff input {
+      width: 160px;
+      padding-left: 11px;
+      padding-top: 9px; }
+    #calculator .calculator-content #compra-stuff .info-icon {
+      margin-left: 0;
+      color: white;
+      font-size: 1.5rem;
+      height: 26px;
+      position: relative;
+      top: 10px;
+      left: 8px;
+      cursor: pointer; }
+    #calculator .calculator-content #see-details-btn {
+      margin-top: 15px;
+      color: white;
+      position: relative;
+      left: 108px;
+      cursor: pointer; }
+      #calculator .calculator-content #see-details-btn:hover {
+        text-decoration: underline; }
+    #calculator .calculator-content .label {
+      color: white;
+      font-size: 1.1rem;
+      list-style: none; }
+    #calculator .calculator-content .fa-question-circle {
+      color: white;
+      font-size: 1.1rem;
+      margin-top: 5px;
+      position: relative;
+      cursor: pointer;
+      margin-left: 7px;
+      margin-right: 15px; }
+    #calculator .calculator-content #label-compra {
+      cursor: default; }
+    #calculator .calculator-content .currency {
+      cursor: default; }
+    #calculator .calculator-content .label {
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px; }
+    #calculator .calculator-content .total {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px; }
+    #calculator .calculator-content .disabled {
+      text-decoration: line-through; }
+    #calculator .calculator-content hr {
+      border-color: white;
+      width: 80%; }
+    @media (max-width: 770px) {
+      #calculator .calculator-content hr {
+        width: 100%; } }
+    #calculator .calculator-content #hr-main {
+      margin-top: 32px;
+      margin-bottom: 19px; }
+    #calculator .calculator-content input[type="number"]::-webkit-outer-spin-button,
+    #calculator .calculator-content input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0; }
+    #calculator .calculator-content input[type="number"] {
+      -moz-appearance: textfield; }
+
+.modal {
+  background-color: rgba(255, 255, 255, 0.5);
+  font-family: 'Roboto'; }
+  .modal .modal-dialog {
+    min-height: calc(100vh - 60px);
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: auto; }
+    .modal .modal-dialog .modal-header {
+      background-color: #3FC380;
+      color: white; }
+    .modal .modal-dialog .modal-title {
+      display: flex;
+      flex: 1;
+      justify-content: center; }
+    .modal .modal-dialog .modal-close-icon {
+      color: white; }
+  .modal #infoModalExtensions img {
+    padding: 10px;
+    background-color: #545454; }
+
+#settings {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  min-width: 350px;
+  height: 100%;
+  overflow: hidden;
+  display: flex; }
+  @media (max-width: 920px) {
+    #settings {
+      flex-direction: column; } }
+  #settings .panel-left {
+    background-color: #3FC380;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%; }
+    #settings .panel-left h1 {
+      font-weight: 100;
+      color: white; }
+  #settings .settings-body {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    overflow-x: hidden;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: #f1f1f1; }
+    @media (min-height: 820px) {
+      #settings .settings-body {
+        justify-content: center; } }
+    @media (max-width: 920px) {
+      #settings .settings-body {
+        flex: 4; } }
+    #settings .settings-body .close {
+      position: absolute;
+      right: 40px;
+      top: 25px;
+      color: grey; }
+      @media (max-width: 920px) {
+        #settings .settings-body .close {
+          color: white; } }
+    #settings .settings-body .content {
+      width: 50%;
+      min-width: 340px;
+      max-width: 670px; }
+    #settings .settings-body .settings-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 50px; }
+      #settings .settings-body .settings-row p {
+        margin: 0; }
+      #settings .settings-body .settings-row .settings-input {
+        width: 70px;
+        padding: 5px 0;
+        text-align: center;
+        box-shadow: none; }
+        #settings .settings-body .settings-row .settings-input.automatic {
+          color: grey; }
+        #settings .settings-body .settings-row .settings-input.input-error {
+          background-color: #e84e4e;
+          color: white; }
+      #settings .settings-body .settings-row #dolar-input-auto {
+        color: grey; }
+      #settings .settings-body .settings-row.settings-row-currencies {
+        flex-direction: column;
+        align-items: flex-start; }
+        #settings .settings-body .settings-row.settings-row-currencies .last-update {
+          color: #9e9e9e; }
+          #settings .settings-body .settings-row.settings-row-currencies .last-update .currency-refresh {
+            color: #449d44; }
+    #settings .settings-body .color-picker-btn {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      padding: 0; }
+      #settings .settings-body .color-picker-btn.rose {
+        background-color: #D24D57; }
+      #settings .settings-body .color-picker-btn.emerald {
+        background-color: #3FC380; }
+      #settings .settings-body .color-picker-btn.carbon {
+        background-color: #292b2c; }
+      #settings .settings-body .color-picker-btn.blue {
+        background-color: #3367d6; }
+    #settings .settings-body .contact-link-container {
+      width: calc(100% - 60px);
+      color: #4975f7; }
+      #settings .settings-body .contact-link-container #contact-link i {
+        font-size: 1.5rem; }
+  #settings #version {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: #9a9a9a;
+    margin: 20px; }
+    @media (max-width: 500px) {
+      #settings #version {
+        display: none; } }
+
+#welcome {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: #3FC380;
+  z-index: 2; }
+  @media (max-width: 900px) {
+    #welcome {
+      flex-direction: column; } }
+  #welcome .panel-left, #welcome .panel-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+  #welcome .panel-left {
+    flex-direction: column; }
+  #welcome .panel-right {
+    background-color: white; }
+  #welcome .welcome-content .bottom-content {
+    position: absolute;
+    height: 50%;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; }
+    @media (max-width: 900px) {
+      #welcome .welcome-content .bottom-content {
+        position: initial; } }
+    @media (max-height: 500px) {
+      #welcome .welcome-content .bottom-content {
+        position: initial; } }
+  #welcome .title {
+    color: white;
+    text-align: center;
+    font-weight: 100;
+    font-family: 'Comfortaa', cursive; }
+  #welcome #logo {
+    width: 75px;
+    margin-bottom: 50px; }
+  #welcome img {
+    width: 130px;
+    image-rendering: -webkit-optimize-contrast;
+    margin-bottom: 20px; }
+  #welcome .description {
+    font-weight: bold;
+    color: #3FC380;
+    text-align: center; }
+  #welcome .see-terms-btn {
+    cursor: pointer;
+    color: #3FC380;
+    text-decoration: underline; }
+    #welcome .see-terms-btn:hover {
+      background-color: white;
+      color: #3FC380; }
+  #welcome .custom-checkbox span {
+    color: #3FC380; }
+  #welcome .custom-checkbox .background {
+    margin-right: 2px;
+    background-color: #3FC380; }
+    #welcome .custom-checkbox .background i {
+      color: white !important; }
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Roboto';
+  animation: fadein 2s; }
+
+@keyframes fadein {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+#app {
+  width: 100%;
+  height: 100%; }
+  #app #termsModal .modal-dialog {
+    width: 70%;
+    max-width: 800px; }
+    @media (max-width: 800px) {
+      #app #termsModal .modal-dialog {
+        width: 100%; } }
+  #app #termsModal .terms {
+    white-space: pre-line;
+    height: 400px;
+    overflow: auto;
+    border: 1px solid #cacaca; }
+  #app .half-opacity {
+    opacity: 0.5; }
+  #app .btn {
+    border-radius: 0px; }
+  #app .btn-icon {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer; }
+  #app .btn-transparent {
+    background: none;
+    border: none; }
+  #app .btn-white {
+    background-color: white;
+    border-color: #b9b9b9; }
+  #app .btn-welcome {
+    color: white;
+    background-color: #3FC380;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    cursor: pointer; }
+    #app .btn-welcome.disabled {
+      cursor: not-allowed;
+      background-color: #c6c6c6; }
+  #app .cursor-pointer {
+    cursor: pointer; }
+  #app .cursor-default {
+    cursor: default; }
+  #app .fake-link {
+    color: #0087ff;
+    cursor: pointer; }
+    #app .fake-link:hover {
+      text-decoration: underline; }
+  #app .no-select {
+    user-select: none;
+    -moz-user-select: none; }
+  #app #app-links {
+    position: absolute;
+    right: 33px;
+    top: 19px; }
+    #app #app-links button {
+      background: none;
+      border: none;
+      cursor: pointer; }
+      @media (max-width: 1260px) {
+        #app #app-links button {
+          color: white !important; } }
+      #app #app-links button i {
+        font-size: 1.5rem; }
+  #app input[type=number] {
+    -moz-appearance: textfield; }
+  #app input::-webkit-outer-spin-button,
+  #app input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0;
+    /* <-- Apparently some margin are still there even though it's hidden */ }
