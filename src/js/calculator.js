@@ -137,7 +137,7 @@ export default function Calculator(){
 
     function mouseWheelListener(e){
 
-        if(data.showingSettings){
+        if(data.showingSettings || !data.hasAcceptedTerms){
             return;
         }
         
