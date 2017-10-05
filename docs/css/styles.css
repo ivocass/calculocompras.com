@@ -267,6 +267,7 @@
     .modal .modal-dialog .modal-close-icon {
       color: white; }
   .modal #infoModalExtensions img {
+    width: 100%;
     padding: 10px;
     background-color: #545454; }
 
