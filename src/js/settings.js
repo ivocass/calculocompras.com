@@ -114,6 +114,7 @@ export default function Settings(){
 
         if(app.data.alternativeDesignEnabled){
             $('#section-purchase').css('background-color', color);
+            $('#section-expenses').css('background-color', color);
             $('#section-total').css('background-color', 'white');
             $('#section-total').css('color', color);
 

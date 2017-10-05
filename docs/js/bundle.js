@@ -1721,6 +1721,7 @@ function Settings() {
 
         if (_app2.default.data.alternativeDesignEnabled) {
             $('#section-purchase').css('background-color', color);
+            $('#section-expenses').css('background-color', color);
             $('#section-total').css('background-color', 'white');
             $('#section-total').css('color', color);
 
