@@ -173,6 +173,7 @@ gulp.task('build', function() {
               // 'build:remove',
               'sass',
               'js',
+              'html-modular',
               'publish',
               'exit');
 });

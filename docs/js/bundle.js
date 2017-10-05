@@ -531,7 +531,7 @@ function Calculator() {
 
         log('Calculator()');
 
-        // todo: user better names to identify html elements
+        // todo: use better names to identify html elements
         var priceCompraInput;
         var currencyConversionText;
         var priceAfip;
