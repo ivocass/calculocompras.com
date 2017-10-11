@@ -367,12 +367,12 @@ var App = function App() {
                 valCurrencyConversionText: '$0',
                 valAfip: 0,
                 valCorreo: _app2.default.config.gestionCorreo,
-                valFranquicia: 0,
+                valFranchise: _app2.default.config.valFranchise,
                 valTotal: 0,
                 showCompraPesos: true,
                 showAfip: true,
                 showCorreo: true,
-                showFranquicia: true,
+                useFranchise: true,
                 showInfoIcons: true,
                 showCheckboxes: true,
                 infoModalTitle: '',
@@ -682,9 +682,9 @@ function Calculator() {
                                 break;
 
                         case 'franquicia':
-                                data.showFranquicia = !data.showFranquicia;
+                                data.useFranchise = !data.useFranchise;
 
-                                _app2.default.saveSettingRequested.dispatch({ name: 'showFranquicia', value: data.showFranquicia });
+                                _app2.default.saveSettingRequested.dispatch({ name: 'useFranchise', value: data.useFranchise });
                                 break;
                 }
 
@@ -746,7 +746,7 @@ function Calculator() {
                         return parseFloat(val).toFixed(0);
                 }
 
-                return val;
+                return Number(val);
         }
 
         function updateTotal() {
@@ -755,30 +755,23 @@ function Calculator() {
 
                 var valPurchase = data.valCompra * currencyModifier;
 
-                var valAfip = data.showAfip ? valPurchase * 0.5 : 0;
-                var valCorreo = data.showCorreo ? _app2.default.config.gestionCorreo : 0;
-                var valFranquicia = data.showFranquicia ? -25 * data.currencyUSD.getCurrentVal() : 0;
+                var valAfip = valPurchase * 0.5;
+                var valCorreo = _app2.default.config.gestionCorreo;
+                var valFranchisePesos = data.valFranchise * data.currencyUSD.getCurrentVal();
+                var valFranchiseDiscount = 0; // how much we subtract from valAfip if the franchise is used
 
-                var valAfipTemp = valAfip;
+                // According to AFIP: "El monto del tributo a abonar corresponde al 50% del excedente de la franquicia, 
+                // siendo esta de U$S 25 a utilizarse en un solo envío y una vez por año calendario."
+                if (data.useFranchise) {
 
-                if (data.showAfip && data.showFranquicia) {
-
-                        // if afip is 10 usd, franchise will be -10
-                        if (valFranquicia * -1 > valAfipTemp) {
-                                valFranquicia = -valAfipTemp;
-                        }
-
-                        valAfipTemp += valFranquicia;
-
-                        if (valAfipTemp < 0) {
-                                valAfipTemp = 0;
+                        if (valPurchase <= valFranchisePesos) {
+                                valAfip = 0;
+                        } else {
+                                valAfip = (valPurchase - valFranchisePesos) * 0.5;
                         }
                 }
 
-                var valTotal = valPurchase + valAfipTemp + valCorreo;
-
-                // console.log('data.valTotal', data.valTotal, data.valPesos, data.valAfip, data.valCorreo);
-
+                var valTotal = valPurchase + valAfip + valCorreo;
 
                 if (data.currency.getId() == 'ARS') {
 
@@ -801,14 +794,13 @@ function Calculator() {
 
                 data.valAfip = formatPrice(valAfip);
                 data.valCorreo = formatPrice(valCorreo);
-                data.valFranquicia = formatPrice(valFranquicia);
                 data.valTotal = formatPrice(valTotal);
 
                 if (data.valCompra == 0) {
                         data.valTotal = '?';
                 }
 
-                log('Calculator - updateTotal() -', data.currency.getCurrentVal(), valPurchase, valAfipTemp, valCorreo, valTotal);
+                log('Calculator - updateTotal() -', data.currency.getCurrentVal(), valPurchase, valAfip, valCorreo, valTotal);
         }
 
         function runTests() {
@@ -818,13 +810,14 @@ function Calculator() {
                 console.log('--------- TEST 1 ---------');
 
                 data.valCompra = 123.45;
+                priceCompraInput.value = data.valCompra;
                 data.currencyUSD.setCurrentVal(18.12);
                 data.gestionCorreo = 120;
-                data.valFranquicia = -25 * data.valDolar;
+                data.valFranchise = 25;
 
                 data.showAfip = true;
                 data.showCorreo = true;
-                data.showFranquicia = true;
+                data.useFranchise = true;
 
                 updateTotal();
 
@@ -832,46 +825,36 @@ function Calculator() {
                 _app2.default.data.$mount();
 
                 _utils2.default.assertEquals('currencyConversionText.innerHTML', currencyConversionText.innerHTML, "$2236.91");
-                _utils2.default.assertEquals('priceAfip.innerHTML', priceAfip.innerHTML, "$1118.46");
+                _utils2.default.assertEquals('priceAfip.innerHTML', priceAfip.innerHTML, "$891.96");
                 _utils2.default.assertEquals('priceCorreo.innerHTML', priceCorreo.innerHTML, "$120");
-                _utils2.default.assertEquals('priceFranquicia.innerHTML', priceFranquicia.innerHTML, "$-453");
-                _utils2.default.assertEquals('valTotalSpan.innerHTML', valTotalSpan.innerHTML, "3022.37");
+                _utils2.default.assertEquals('valTotalSpan.innerHTML', valTotalSpan.innerHTML, "3248.87");
 
                 // get the total independently
                 var valPesos = data.valCompra * data.currencyUSD.getCurrentVal();
-                var valAfip = valPesos * 0.5;
+                var valAfip = (data.valCompra - data.valFranchise) * 0.5 * data.currencyUSD.getCurrentVal();
+                valAfip = formatPrice(valAfip);
                 var valCorreo = 120;
-                var valFranquicia = -25 * data.currencyUSD.getCurrentVal();
 
-                var valAfipTemp = valAfip + valFranquicia;
-
-                if (valAfipTemp < 0) {
-                        valAfipTemp = 0;
-                }
-
-                var valTotal = valPesos + valAfipTemp + valCorreo;
+                var valTotal = formatPrice(valPesos + valAfip + valCorreo);
 
                 _utils2.default.assertEquals('valPesos', valPesos, 2236.914);
-                _utils2.default.assertEquals('valAfip', valAfip, 1118.457);
-                _utils2.default.assertEquals('valFranquicia', valFranquicia, -453);
-                _utils2.default.assertEquals('valAfipTemp', valAfipTemp, 665.4570000000001);
-                _utils2.default.assertEquals('valTotal', valTotal, 3022.371);
+                _utils2.default.assertEquals('valAfip', valAfip, 891.96);
+                _utils2.default.assertEquals('valTotal', valTotal, 3248.87);
 
-                _utils2.default.assertEquals('data.valAfip', data.valAfip, formatPrice(valAfip));
-                _utils2.default.assertEquals('data.valFranquicia', data.valFranquicia, formatPrice(valFranquicia));
-                _utils2.default.assertEquals('data.valTotal', data.valTotal, formatPrice(valTotal));
+                _utils2.default.assertEquals('data.valTotal', data.valTotal, valTotal);
 
                 console.log('--------- TEST 2 ---------');
 
                 data.valCompra = 42.42;
+                priceCompraInput.value = data.valCompra;
                 data.currency = data.currencyEUR;
                 data.currencyEUR.setCurrentVal(22.54);
                 data.gestionCorreo = 120;
-                data.valFranquicia = 0;
+                data.valFranchise = 25;
 
                 data.showAfip = true;
                 data.showCorreo = true;
-                data.showFranquicia = false;
+                data.useFranchise = false;
 
                 updateTotal();
 
@@ -881,31 +864,20 @@ function Calculator() {
                 _utils2.default.assertEquals('currencyConversionText.innerHTML', currencyConversionText.innerHTML, "$956.15");
                 _utils2.default.assertEquals('priceAfip.innerHTML', priceAfip.innerHTML, "$478.07");
                 _utils2.default.assertEquals('priceCorreo.innerHTML', priceCorreo.innerHTML, "$120");
-                _utils2.default.assertEquals('priceFranquicia.innerHTML', priceFranquicia.innerHTML, "$0");
                 _utils2.default.assertEquals('valTotalSpan.innerHTML', valTotalSpan.innerHTML, "1554.22");
 
                 // get the total independently
                 valPesos = data.valCompra * data.currency.getCurrentVal();
                 valAfip = valPesos * 0.5;
                 valCorreo = 120;
-                valFranquicia = 0;
 
-                valAfipTemp = valAfip + valFranquicia;
-
-                if (valAfipTemp < 0) {
-                        valAfipTemp = 0;
-                }
-
-                valTotal = valPesos + valAfipTemp + valCorreo;
+                valTotal = valPesos + valAfip + valCorreo;
 
                 _utils2.default.assertEquals('valPesos', valPesos, 956.1468);
                 _utils2.default.assertEquals('valAfip', valAfip, 478.0734);
-                _utils2.default.assertEquals('valFranquicia', valFranquicia, 0);
-                _utils2.default.assertEquals('valAfipTemp', valAfipTemp, valAfip);
                 _utils2.default.assertEquals('valTotal', valTotal, 1554.2202);
 
                 _utils2.default.assertEquals('data.valAfip', data.valAfip, formatPrice(valAfip));
-                _utils2.default.assertEquals('data.valFranquicia', data.valFranquicia, formatPrice(valFranquicia));
                 _utils2.default.assertEquals('data.valTotal', data.valTotal, formatPrice(valTotal));
 
                 console.log('<<<<<<<<<<<<<<<<< Calculator - runTests() - ENDED >>>>>>>>>>>>>>>>');
@@ -1648,7 +1620,7 @@ function Settings() {
 
         var showInfoIcons = _utils2.default.getSavedItem('showInfoIcons');
         var showCheckboxes = _utils2.default.getSavedItem('showCheckboxes');
-        var showFranquicia = _utils2.default.getSavedItem('showFranquicia');
+        var useFranchise = _utils2.default.getSavedItem('useFranchise');
         var alternativeDesignEnabled = _utils2.default.getSavedItem('alternativeDesignEnabled');
 
         dolarInputCustom = $('#dolar-input-custom').get(0);
@@ -1680,8 +1652,8 @@ function Settings() {
         _app2.default.data.showCheckboxes = showCheckboxes;
         $('#sliderToggleCheckboxes').prop('checked', _app2.default.data.showCheckboxes);
 
-        if (showFranquicia !== null && (showFranquicia === true || showFranquicia === false)) {
-            _app2.default.data.showFranquicia = showFranquicia;
+        if (useFranchise !== null && (useFranchise === true || useFranchise === false)) {
+            _app2.default.data.useFranchise = useFranchise;
         }
 
         _app2.default.saveSettingRequested.add(onSaveSettingRequested);
@@ -1742,12 +1714,7 @@ function Settings() {
 
     this.onCurrencyModified = function (event, id) {
 
-        if (!event || !event.srcElement) {
-
-            throw new Error('Settings - onCurrencyModified() - "!event || !event.srcElement"');
-        }
-
-        var val = event.srcElement.value;
+        var val = event.target.value;
 
         if (isNaN(val)) {
             $(event.srcElement).addClass('input-error');

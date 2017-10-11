@@ -35,9 +35,10 @@ var Config = function (){
         this.gestionCorreo = 120;
         this.defaultPurchase = 100;        
         this.valCompraMax = 200;
+        this.valFranchise = 25;
         this.updateCurrency = true;
         this.runTests = false;
         this.loggerEnabled = true;
         this.loggerMaxEntries = 2000;
-        this.version = 0.113;
+        this.version = 0.114;
     };

@@ -36,7 +36,7 @@ export default function Settings(){
         
         var showInfoIcons = utils.getSavedItem('showInfoIcons');
         var showCheckboxes = utils.getSavedItem('showCheckboxes');
-        var showFranquicia = utils.getSavedItem('showFranquicia');
+        var useFranchise = utils.getSavedItem('useFranchise');
         var alternativeDesignEnabled = utils.getSavedItem('alternativeDesignEnabled');
 
         
@@ -71,8 +71,8 @@ export default function Settings(){
         $('#sliderToggleCheckboxes').prop('checked', app.data.showCheckboxes);
         
 
-        if(showFranquicia !== null && (showFranquicia === true || showFranquicia === false)){
-            app.data.showFranquicia = showFranquicia;
+        if(useFranchise !== null && (useFranchise === true || useFranchise === false)){
+            app.data.useFranchise = useFranchise;
         }
 
         app.saveSettingRequested.add(onSaveSettingRequested);
@@ -138,12 +138,7 @@ export default function Settings(){
 
     this.onCurrencyModified = function(event, id){
         
-        if(!event || !event.srcElement){
-
-            throw new Error('Settings - onCurrencyModified() - "!event || !event.srcElement"');
-        }
-
-        var val = event.srcElement.value;
+        var val = event.target.value;
 
         if(isNaN(val)){
             $(event.srcElement).addClass('input-error');

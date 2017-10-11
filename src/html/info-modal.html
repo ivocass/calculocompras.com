@@ -23,10 +23,9 @@
                 </div>
 
 
-                <div id="infoModalAFIP" class="d-none info-modal-content" data-title="Impuesto AFIP">
-                    <p class="mb-3">La AFIP tributa un 50% sobre el valor de la compra.</p>
-                    <p class="mb-3">Si usás la franquicia anual, se le descuentan U$S25 a ese impuesto.</p>
-
+                <div id="infoModalAFIP" class="d-none info-modal-content" data-title="Tributo AFIP">
+                    <p>Según AFIP: "El monto del tributo a abonar corresponde al 50% del excedente de la franquicia, siendo esta de U$S{{valFranchise}} a utilizarse en un solo envío y una vez por año calendario."</p>
+                                        
                     <a href="http://www.afip.gob.ar/puertaapuerta/puertaApuerta.asp#ver" target="_blank">Ver más información en el sitio de AFIP</a>
                 </div>
 
@@ -37,9 +36,12 @@
                     <a href="https://www.correoargentino.com.ar/puerta-puerta/preguntas-frecuentes" target="_blank">Ver más información en el sitio de Correo Argentino</a>
                 </div>
 
-                <div id="infoModalFranquicia" class="d-none info-modal-content" data-title="Franquicia Anual">
-                    <p class="mb-3">AFIP otorga una franquicia de U$S25 por año calendario.</p>
-                    <p class="mb-3">Esa franquicia es un descuento sobre el impuesto del 50%.</p>
+                <div id="infoModalFranquicia" class="d-none info-modal-content" data-title="Descuento Franquicia">
+                    
+                    <p>Según AFIP: "El monto del tributo a abonar corresponde al 50% del excedente de la franquicia, siendo esta de U$S {{valFranchise}} a utilizarse en un solo envío y una vez por año calendario."</p>
+
+                    <p class="mb-3"> Eso significa que, si tenés disponible la franquicia, el tributo del 50% sobre el valor de la compra se calcularía como si tu compra hubiese costado U$S{{valFranchise}} menos
+                         (no significa que se le descuenten U$S{{valFranchise}} al tributo).</p>                    
 
                     <a href="http://www.afip.gob.ar/puertaapuerta/puertaApuerta.asp#ver" target="_blank">Ver más información en el sitio de AFIP</a>
                 </div>

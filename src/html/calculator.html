@@ -50,7 +50,7 @@
 
             <div class="title-area">
                 <h1 class="title" aria-label="Sección que detalla los costos de 'tributo de AFIP (50% sobre el valor de la compra)', 
-                                    'Gestión de Correo Argentino ($120)' y 'Franquicia Anual de AFIP (25 dólares que se le pueden descontar una vez al año al tributo de AFIP'). Los valores mencionados pueden estar desactualizados.'">
+                                    'Gestión de Correo Argentino ($120)' y descuento de la franquicia anual. Los valores mencionados pueden estar desactualizados.'">
                     DETALLE
                 </h1>
             </div>
@@ -88,8 +88,8 @@
                             </label>
                         </div>
 
-                        <div class="custom-checkbox" aria-label="Seleccionar si querés que se aplique la franquicia anual sobre el tributo de AFIP">
-                            <input type="checkbox" id="cbox4" name="cc" :checked="showFranquicia" v-on:click="onLabelClicked('franquicia')"/>
+                        <div class="custom-checkbox" aria-label="Seleccionar si querés que se aplique el descuento de la franquicia anual al impuesto de AFIP.">
+                            <input type="checkbox" id="cbox4" name="cc" :checked="useFranchise" v-on:click="onLabelClicked('franquicia')"/>
                             <label for="cbox4">
                                 <span class="background">
                                     <i class="fa fa-check checkbox-check" aria-hidden="true"></i>
@@ -116,10 +116,10 @@
                         <div class="d-flex">
 
                             <span id="label-afip" class="label" v-bind:class="{disabled:!showAfip}" title="50%">
-                                Impuesto AFIP											
+                                Tributo AFIP											
                             </span>
 
-                            <i v-if="showInfoIcons" class="fa fa-question-circle" data-toggle="modal" data-target="#infoModal" v-on:click="showInfoModal('#infoModalAFIP')" aria-hidden="true" title="Click para ver información sobre el impuesto de AFIP"></i>
+                            <i v-if="showInfoIcons" class="fa fa-question-circle" data-toggle="modal" data-target="#infoModal" v-on:click="showInfoModal('#infoModalAFIP')" aria-hidden="true" title="Click para ver información sobre el tributo de AFIP"></i>
 
                         </div>
                         
@@ -135,8 +135,8 @@
                         
                         <div class="d-flex">
 
-                            <span id="label-franquicia" class="label cursor-pointer no-select" v-bind:class="{disabled:!showFranquicia || !showAfip}" v-on:click="onLabelClicked('franquicia')">
-                                Franquicia anual										
+                            <span id="label-franquicia" class="label cursor-pointer no-select" v-bind:class="{disabled:!useFranchise || !showAfip}" v-on:click="onLabelClicked('franquicia')">
+                                Franquicia anual							
                             </span>
 
                             <i v-if="showInfoIcons" class="fa fa-question-circle" data-toggle="modal" data-target="#infoModal" v-on:click="showInfoModal('#infoModalFranquicia')" aria-hidden="true" title="Click para ver información sobre la franquicia anual"></i>
@@ -152,7 +152,7 @@
                             <li class="label" id="currency-conversion-text" v-bind:class="{invisible:!showCompraPesos}" aria-label="El monto de la compra expresada en pesos">{{valCurrencyConversionText}}</li>
                             <li class="label" id="price-afip" v-bind:class="{invisible:!showAfip}" title="50%" aria-label="El monto del tributo de AFIP">${{valAfip}}</li>
                             <li class="label" id="price-correo" v-bind:class="{invisible:!showCorreo}" aria-label="El monto de gestión de Correo Argentino">${{valCorreo}}</li>
-                            <li class="label" id="price-franquicia" v-bind:class="{invisible:!showFranquicia || !showAfip}" aria-label="El monto de la franquicia anual">${{valFranquicia}}</li>
+                            <!-- <li class="label" id="price-franquicia" v-bind:class="{invisible:!useFranchise || !showAfip}" aria-label="El monto de la franquicia anual">${{valFranchiseDiscount}}</li> -->
                         <ul>
 
                     </div>
