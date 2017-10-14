@@ -41,10 +41,66 @@ var Currency = function(id){
 
         log('Currency - setCurrentVal()', id, val);
 
+        val = applyOffset(val);
+
         currentVal = val;
 
         updateSelectOption();
     }
+
+    function applyOffset(val){
+
+        if(id == 'ARS'){
+            return val;
+        }
+
+        var offset = app.data.currencyOffset;
+
+        if(!_usesCustomVal && offset != 0){
+            
+            if(updatedVal == -1){
+                val = fallbackVal;
+            }
+            else{
+                val = updatedVal;
+            }
+
+            if(offset >= -50 && offset <= 50){
+
+                // offset is a percentage, so it should be divided by 100 and added to 1
+                // e.g.: 17.4 * (1 + 2 / 100)   ===> 17.4 * 1.02
+                val *= 1 + offset / 100;
+
+                val = utils.formatCurrency(val);
+
+                log('Currency - setCurrentVal() applied offset. id:', id, 'val:', val, 'offset:', offset);
+            }
+        }
+
+        return val;
+    }
+    
+    this.refresh = function(){
+
+        log('Currency - refresh()', id);
+
+        var val = -1;
+
+        if(_usesCustomVal){
+            val = customVal;
+        }
+        else{
+
+            if(updatedVal == -1){
+                val = fallbackVal;
+            }
+            else{
+                val = updatedVal;
+            }
+        }
+
+        this.setCurrentVal(val);
+    };   
 
     this.setAutoMode = function (usesCustomVal){
 
@@ -241,7 +297,6 @@ var Currency = function(id){
         }
     }
 
-    
     function onUpdateReady(update){
 
         log('Currency - onUpdateReady()', update.id, update.value, update.date);

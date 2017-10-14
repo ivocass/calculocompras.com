@@ -29,13 +29,7 @@ var CurrencyManager = function(){
             
             selectedCurrencyId = app.config.defaultCurrencyId;
 
-            ga('send', {
-                hitType: 'event',
-                eventCategory: 'Settings',
-                eventAction: 'loaded',
-                eventLabel: 'selectedCurrencyId',
-                eventValue: selectedCurrencyId
-            });
+            utils.track('Settings', 'loaded', 'selectedCurrencyId', selectedCurrencyId);
         }
 
         app.data.currency = getCurrencyById(selectedCurrencyId);
@@ -49,6 +43,19 @@ var CurrencyManager = function(){
 
         app.currencySliderToggled.add(onCurrencySliderToggled);
         app.currencyModified.add(onCurrencyModified);
+        app.currencyOffsetToggled.add(onCurrencyOffsetToggled);
+        app.currencyOffsetModified.add(onCurrencyOffsetModified);
+    }
+
+    function onCurrencyOffsetToggled(){
+
+        app.data.currencies.forEach(function(currency){
+            currency.refresh();
+        });
+    }
+
+    function onCurrencyOffsetModified(val){
+        onCurrencyOffsetToggled();
     }
 
     this.updateCurrency = function (id){
@@ -67,7 +74,7 @@ var CurrencyManager = function(){
         if(currency){
             currency.setAutoMode(data.value);
         }
-    }
+    }    
 
     function onCurrencyModified(data){
 

@@ -272,6 +272,10 @@ var _app = require('./app');
 
 var _app2 = _interopRequireDefault(_app);
 
+var _utils = require('./utils');
+
+var _utils2 = _interopRequireDefault(_utils);
+
 var _logger = require('./logger');
 
 var _logger2 = _interopRequireDefault(_logger);
@@ -331,7 +335,9 @@ var App = function App() {
     this.currencyUpdated = new _signal2.default();
     this.currencySelected = new _signal2.default();
     this.currencySliderToggled = new _signal2.default();
-    this.currencyModified = new _signal2.default();
+    this.currencyOffsetToggled = new _signal2.default();
+    this.currencyModified = new _signal2.default(); // dispatched after processed by Settings
+    this.currencyOffsetModified = new _signal2.default(); // dispatched after processed by Settings
     this.settingsChanged = new _signal2.default();
     this.saveSettingRequested = new _signal2.default();
 
@@ -343,6 +349,8 @@ var App = function App() {
         hasInitialized = true;
 
         _logger2.default.setMaxEntries(this.config.loggerMaxEntries);
+
+        _utils2.default.trackingEnabled = this.config.trackingEnabled;
 
         this.data = new Vue({
             el: '#app',
@@ -362,6 +370,8 @@ var App = function App() {
                 selectOptionEUR: 'EUR (Euro) - $...',
                 selectOptionGBP: 'GBP (Libra) - $...',
                 selectOptionARS: 'ARS (Peso)',
+                currencyOffset: _app2.default.config.currencyOffset,
+                isOffsetCustom: false,
                 valCompra: _app2.default.config.defaultPurchase,
                 valCurrencyConversion: 0,
                 valCurrencyConversionText: '$0',
@@ -401,6 +411,12 @@ var App = function App() {
                 },
                 toggleCheckboxes: function toggleCheckboxes() {
                     settings.toggleCheckboxes();
+                },
+                toggleCurrencyOffset: function toggleCurrencyOffset() {
+                    settings.toggleCurrencyOffset();
+                },
+                onCurrencyOffsetModified: function onCurrencyOffsetModified(event) {
+                    settings.onCurrencyOffsetModified(event);
                 },
 
                 // termsMgr
@@ -460,22 +476,15 @@ var App = function App() {
     };
 
     this.onFacebookClicked = function () {
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Facebook',
-            eventAction: 'Clicked'
-        });
+
+        _utils2.default.track('Facebook', 'Clicked');
 
         window.open('https://www.facebook.com/CalculoCompras', '_blank');
     };
 
     this.onExtensionClicked = function (browserName) {
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Extension',
-            eventAction: 'Clicked',
-            eventLabel: browserName
-        });
+
+        _utils2.default.track('Extension', 'Clicked', browserName);
     };
 };
 
@@ -485,7 +494,7 @@ exports.default = new App();
 
 _app2.default.init();
 
-},{"./app":2,"./calculator":3,"./currency/currency":4,"./currency/currencyManager":5,"./logger":7,"./settings":8,"./signal":9,"./termsMgr":10,"promise-polyfill":1}],3:[function(require,module,exports){
+},{"./app":2,"./calculator":3,"./currency/currency":4,"./currency/currencyManager":5,"./logger":7,"./settings":8,"./signal":9,"./termsMgr":10,"./utils":11,"promise-polyfill":1}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -944,9 +953,62 @@ var Currency = function Currency(id) {
 
         log('Currency - setCurrentVal()', id, val);
 
+        val = applyOffset(val);
+
         currentVal = val;
 
         updateSelectOption();
+    };
+
+    function applyOffset(val) {
+
+        if (id == 'ARS') {
+            return val;
+        }
+
+        var offset = _app2.default.data.currencyOffset;
+
+        if (!_usesCustomVal && offset != 0) {
+
+            if (updatedVal == -1) {
+                val = fallbackVal;
+            } else {
+                val = updatedVal;
+            }
+
+            if (offset >= -50 && offset <= 50) {
+
+                // offset is a percentage, so it should be divided by 100 and added to 1
+                // e.g.: 17.4 * (1 + 2 / 100)   ===> 17.4 * 1.02
+                val *= 1 + offset / 100;
+
+                val = _utils2.default.formatCurrency(val);
+
+                log('Currency - setCurrentVal() applied offset. id:', id, 'val:', val, 'offset:', offset);
+            }
+        }
+
+        return val;
+    }
+
+    this.refresh = function () {
+
+        log('Currency - refresh()', id);
+
+        var val = -1;
+
+        if (_usesCustomVal) {
+            val = customVal;
+        } else {
+
+            if (updatedVal == -1) {
+                val = fallbackVal;
+            } else {
+                val = updatedVal;
+            }
+        }
+
+        this.setCurrentVal(val);
     };
 
     this.setAutoMode = function (usesCustomVal) {
@@ -1200,13 +1262,7 @@ var CurrencyManager = function CurrencyManager() {
 
             selectedCurrencyId = _app2.default.config.defaultCurrencyId;
 
-            ga('send', {
-                hitType: 'event',
-                eventCategory: 'Settings',
-                eventAction: 'loaded',
-                eventLabel: 'selectedCurrencyId',
-                eventValue: selectedCurrencyId
-            });
+            _utils2.default.track('Settings', 'loaded', 'selectedCurrencyId', selectedCurrencyId);
         }
 
         _app2.default.data.currency = getCurrencyById(selectedCurrencyId);
@@ -1219,6 +1275,19 @@ var CurrencyManager = function CurrencyManager() {
 
         _app2.default.currencySliderToggled.add(onCurrencySliderToggled);
         _app2.default.currencyModified.add(onCurrencyModified);
+        _app2.default.currencyOffsetToggled.add(onCurrencyOffsetToggled);
+        _app2.default.currencyOffsetModified.add(onCurrencyOffsetModified);
+    }
+
+    function onCurrencyOffsetToggled() {
+
+        _app2.default.data.currencies.forEach(function (currency) {
+            currency.refresh();
+        });
+    }
+
+    function onCurrencyOffsetModified(val) {
+        onCurrencyOffsetToggled();
     }
 
     this.updateCurrency = function (id) {
@@ -1621,6 +1690,7 @@ function Settings() {
         var showInfoIcons = _utils2.default.getSavedItem('showInfoIcons');
         var showCheckboxes = _utils2.default.getSavedItem('showCheckboxes');
         var useFranchise = _utils2.default.getSavedItem('useFranchise');
+        var isOffsetCustom = _utils2.default.getSavedItem('isOffsetCustom');
         var alternativeDesignEnabled = _utils2.default.getSavedItem('alternativeDesignEnabled');
 
         dolarInputCustom = $('#dolar-input-custom').get(0);
@@ -1632,13 +1702,7 @@ function Settings() {
         _app2.default.data.alternativeDesignEnabled = alternativeDesignEnabled;
         $('#sliderToggleDesign').prop('checked', _app2.default.data.alternativeDesignEnabled);
 
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Settings',
-            eventAction: 'loaded',
-            eventLabel: 'alternativeDesignEnabled',
-            eventValue: _app2.default.data.alternativeDesignEnabled
-        });
+        _utils2.default.track('Settings', 'loaded', 'alternativeDesignEnabled', _app2.default.data.alternativeDesignEnabled);
 
         loadMainColor();
 
@@ -1651,6 +1715,21 @@ function Settings() {
         if (showCheckboxes === null) showCheckboxes = _app2.default.data.showCheckboxes; // set to default
         _app2.default.data.showCheckboxes = showCheckboxes;
         $('#sliderToggleCheckboxes').prop('checked', _app2.default.data.showCheckboxes);
+
+        // it may be null, true, false
+        if (isOffsetCustom === null) isOffsetCustom = _app2.default.data.isOffsetCustom; // set to default
+        _app2.default.data.isOffsetCustom = isOffsetCustom;
+        $('#sliderToggleOffset').prop('checked', !isOffsetCustom);
+
+        // restore custom offset if any and if valid
+        if (isOffsetCustom) {
+            var currencyOffsetCustom = _utils2.default.getSavedItem('currencyOffsetCustom');
+
+            if (currencyOffsetCustom != null && currencyOffsetCustom != 0 && currencyOffsetCustom >= -50 && currencyOffsetCustom <= 50) {
+                _app2.default.data.currencyOffset = currencyOffsetCustom;
+                $('#currencyOffsetInput').val(currencyOffsetCustom);
+            }
+        }
 
         if (useFranchise !== null && (useFranchise === true || useFranchise === false)) {
             _app2.default.data.useFranchise = useFranchise;
@@ -1717,21 +1796,66 @@ function Settings() {
         var val = event.target.value;
 
         if (isNaN(val)) {
-            $(event.srcElement).addClass('input-error');
+            $(event.target).addClass('input-error');
             return;
         }
 
         val = Number(val);
 
         if (val <= 0) {
-            $(event.srcElement).addClass('input-error');
+            $(event.target).addClass('input-error');
         } else {
-            $(event.srcElement).removeClass('input-error');
+            $(event.target).removeClass('input-error');
 
             _app2.default.currencyModified.dispatch({ id: id, value: val });
 
             _app2.default.settingsChanged.dispatch();
         }
+    };
+
+    this.onCurrencyOffsetModified = function (event) {
+
+        var val = event.target.value;
+
+        if (isNaN(val)) {
+            $(event.target).addClass('input-error');
+            return;
+        }
+
+        val = Number(val);
+
+        if (val < -50 || val > 50) {
+            $(event.target).addClass('input-error');
+        } else {
+            $(event.target).removeClass('input-error');
+
+            _app2.default.data.currencyOffset = val;
+
+            _app2.default.currencyOffsetModified.dispatch(val);
+
+            _app2.default.settingsChanged.dispatch();
+
+            localStorage.setItem('currencyOffsetCustom', val);
+        }
+    };
+
+    this.toggleCurrencyOffset = function () {
+
+        _app2.default.data.isOffsetCustom = !$('#sliderToggleOffset').prop('checked');
+
+        if (_app2.default.data.isOffsetCustom) {
+
+            _app2.default.data.currencyOffset = 0;
+            $('#currencyOffsetInput').val(_app2.default.data.currencyOffset);
+        } else {
+            _app2.default.data.currencyOffset = _app2.default.config.currencyOffset;
+        }
+
+        _app2.default.currencyOffsetToggled.dispatch();
+
+        localStorage.setItem('isOffsetCustom', _app2.default.data.isOffsetCustom);
+
+        _app2.default.settingsChanged.dispatch();
     };
 
     this.toggleCustomCurrency = function (id) {
@@ -1771,13 +1895,7 @@ function Settings() {
 
             self.setMainColor(mainColor);
 
-            ga('send', {
-                hitType: 'event',
-                eventCategory: 'Settings',
-                eventAction: 'loaded',
-                eventLabel: 'mainColor',
-                eventValue: mainColor
-            });
+            _utils2.default.track('Settings', 'loaded', 'mainColor', mainColor);
         } else {
             self.setMainColor(_app2.default.config.mainColor);
         }
@@ -2089,6 +2207,9 @@ SOFTWARE.
 
 var Utils = function Utils() {
 
+    var self = this;
+    this.trackingEnabled = false;
+
     this.isBrowser = function (name) {
 
         return navigator.userAgent.indexOf(name) > -1;
@@ -2148,6 +2269,35 @@ var Utils = function Utils() {
         }
 
         return null;
+    };
+
+    this.track = function (category) {
+        var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+        var label = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+        var value = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+
+
+        if (!self.trackingEnabled) return;
+
+        ga('send', {
+            hitType: 'event',
+            eventCategory: category,
+            eventAction: action,
+            eventLabel: label,
+            eventValue: value
+        });
+    };
+
+    this.formatCurrency = function (val) {
+
+        val = parseFloat(val).toFixed(2);
+
+        if (Number.isInteger(Number(val))) {
+
+            return parseFloat(val).toFixed(0);
+        }
+
+        return Number(val);
     };
 
     this.loadText = function (url) {

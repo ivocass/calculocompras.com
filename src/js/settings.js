@@ -37,6 +37,7 @@ export default function Settings(){
         var showInfoIcons = utils.getSavedItem('showInfoIcons');
         var showCheckboxes = utils.getSavedItem('showCheckboxes');
         var useFranchise = utils.getSavedItem('useFranchise');
+        var isOffsetCustom = utils.getSavedItem('isOffsetCustom');
         var alternativeDesignEnabled = utils.getSavedItem('alternativeDesignEnabled');
 
         
@@ -50,13 +51,7 @@ export default function Settings(){
         app.data.alternativeDesignEnabled = alternativeDesignEnabled;
         $('#sliderToggleDesign').prop('checked', app.data.alternativeDesignEnabled);
 
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Settings',
-            eventAction: 'loaded',
-            eventLabel: 'alternativeDesignEnabled',
-            eventValue: app.data.alternativeDesignEnabled
-        });
+        utils.track('Settings', 'loaded', 'alternativeDesignEnabled', app.data.alternativeDesignEnabled);
 
         loadMainColor();
 
@@ -69,6 +64,21 @@ export default function Settings(){
         if(showCheckboxes === null) showCheckboxes = app.data.showCheckboxes; // set to default
         app.data.showCheckboxes = showCheckboxes;
         $('#sliderToggleCheckboxes').prop('checked', app.data.showCheckboxes);
+
+        // it may be null, true, false
+        if(isOffsetCustom === null) isOffsetCustom = app.data.isOffsetCustom; // set to default
+        app.data.isOffsetCustom = isOffsetCustom;
+        $('#sliderToggleOffset').prop('checked', !isOffsetCustom);
+
+        // restore custom offset if any and if valid
+        if(isOffsetCustom){
+            var currencyOffsetCustom = utils.getSavedItem('currencyOffsetCustom');
+
+            if(currencyOffsetCustom != null && currencyOffsetCustom != 0 && currencyOffsetCustom >= -50 && currencyOffsetCustom <= 50){
+                app.data.currencyOffset = currencyOffsetCustom;
+                $('#currencyOffsetInput').val(currencyOffsetCustom);
+            }
+        }
         
 
         if(useFranchise !== null && (useFranchise === true || useFranchise === false)){
@@ -141,22 +151,69 @@ export default function Settings(){
         var val = event.target.value;
 
         if(isNaN(val)){
-            $(event.srcElement).addClass('input-error');
+            $(event.target).addClass('input-error');
             return;
         }
 
         val = Number(val);
 
         if(val <= 0){
-            $(event.srcElement).addClass('input-error');
+            $(event.target).addClass('input-error');
         }
         else{
-            $(event.srcElement).removeClass('input-error');
+            $(event.target).removeClass('input-error');
 
             app.currencyModified.dispatch({id:id, value:val});
             
             app.settingsChanged.dispatch();
         }
+    };
+
+    this.onCurrencyOffsetModified = function(event){
+
+        var val = event.target.value;
+
+        if(isNaN(val)){
+            $(event.target).addClass('input-error');
+            return;
+        }        
+        
+        val = Number(val);
+
+        if(val < -50 || val > 50){
+            $(event.target).addClass('input-error');
+        }
+        else{
+            $(event.target).removeClass('input-error');
+
+            app.data.currencyOffset = val;
+
+            app.currencyOffsetModified.dispatch(val);
+            
+            app.settingsChanged.dispatch();
+
+            localStorage.setItem('currencyOffsetCustom', val);
+        }
+    }
+
+    this.toggleCurrencyOffset = function (){
+
+        app.data.isOffsetCustom = !$('#sliderToggleOffset').prop('checked');
+        
+        if(app.data.isOffsetCustom){
+
+            app.data.currencyOffset = 0;
+            $('#currencyOffsetInput').val(app.data.currencyOffset);
+        }
+        else{
+            app.data.currencyOffset = app.config.currencyOffset;            
+        }
+
+        app.currencyOffsetToggled.dispatch();
+
+        localStorage.setItem('isOffsetCustom', app.data.isOffsetCustom)
+
+        app.settingsChanged.dispatch();
     };
 
     this.toggleCustomCurrency = function(id){
@@ -199,14 +256,7 @@ export default function Settings(){
             
             self.setMainColor(mainColor);
 
-            ga('send', {
-                hitType: 'event',
-                eventCategory: 'Settings',
-                eventAction: 'loaded',
-                eventLabel: 'mainColor',
-                eventValue: mainColor
-            });
-              
+            utils.track('Settings', 'loaded', 'mainColor', mainColor);              
         }
         else{
             self.setMainColor(app.config.mainColor);

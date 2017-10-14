@@ -24,6 +24,9 @@ SOFTWARE.
 
 
 var Utils = function(){
+
+    var self = this;
+    this.trackingEnabled = false;
     
     this.isBrowser = function(name){
 
@@ -88,6 +91,30 @@ var Utils = function(){
         return null;
     };
 
+    this.track = function (category, action = '', label = '', value = ''){
+
+        if(!self.trackingEnabled) return;
+
+        ga('send', {
+            hitType: 'event',
+            eventCategory: category,
+            eventAction: action,
+            eventLabel: label,
+            eventValue: value
+        });
+    };
+
+    this.formatCurrency = function(val){
+
+        val = parseFloat(val).toFixed(2);
+
+        if(Number.isInteger(Number(val))){
+            
+            return parseFloat(val).toFixed(0);
+        }
+
+        return Number(val);
+    }
     
     this.loadText = function (url){
 

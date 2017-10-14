@@ -26,6 +26,7 @@ SOFTWARE.
 
 import Promise from 'promise-polyfill'; 
 import app from './app';
+import utils from './utils';
 
 import logger from './logger';
 
@@ -58,7 +59,7 @@ var App = function(){
 
     log('App()');    
     
-    this.config = new Config();
+    this.config = new Config();    
     this.data;
 
     var hasInitialized = false;    
@@ -70,7 +71,9 @@ var App = function(){
     this.currencyUpdated = new Signal();
     this.currencySelected = new Signal();
     this.currencySliderToggled = new Signal();
-    this.currencyModified = new Signal();
+    this.currencyOffsetToggled = new Signal();
+    this.currencyModified = new Signal(); // dispatched after processed by Settings
+    this.currencyOffsetModified = new Signal(); // dispatched after processed by Settings
     this.settingsChanged = new Signal();
     this.saveSettingRequested = new Signal();
 
@@ -82,6 +85,9 @@ var App = function(){
         hasInitialized = true;
 
         logger.setMaxEntries(this.config.loggerMaxEntries);
+
+        utils.trackingEnabled = this.config.trackingEnabled;
+
 
         this.data = new Vue({
         el: '#app',
@@ -101,6 +107,8 @@ var App = function(){
             selectOptionEUR:'EUR (Euro) - $...',
             selectOptionGBP:'GBP (Libra) - $...',
             selectOptionARS:'ARS (Peso)',
+            currencyOffset:app.config.currencyOffset,
+            isOffsetCustom:false,
             valCompra:app.config.defaultPurchase,
             valCurrencyConversion:0,        
             valCurrencyConversionText:'$0',        
@@ -128,7 +136,9 @@ var App = function(){
             toggleDesign:function(){settings.toggleDesign()},
             toggleCustomCurrency:function(id){settings.toggleCustomCurrency(id)},
             toggleInfoIcons:function(){settings.toggleInfoIcons()},
-            toggleCheckboxes:function(){settings.toggleCheckboxes()},
+            toggleCheckboxes:function(){settings.toggleCheckboxes()},            
+            toggleCurrencyOffset:function(){settings.toggleCurrencyOffset()},
+            onCurrencyOffsetModified:function(event){settings.onCurrencyOffsetModified(event)},
 
             // termsMgr
             onTermsCheckboxClicked:function(){termsMgr.onTermsCheckboxClicked()},
@@ -163,22 +173,15 @@ var App = function(){
     };
 
     this.onFacebookClicked = function(){
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Facebook',
-            eventAction: 'Clicked'
-        });
+
+        utils.track('Facebook', 'Clicked');
 
         window.open('https://www.facebook.com/CalculoCompras','_blank');
     };
 
     this.onExtensionClicked = function(browserName){
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Extension',
-            eventAction: 'Clicked',
-            eventLabel:browserName
-        });
+
+        utils.track('Extension', 'Clicked', browserName);
     };
     
 }

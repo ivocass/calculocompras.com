@@ -1,4 +1,5 @@
 <div id="settings" v-bind:class="{'d-none':!showingSettings}">
+<!-- <div id="settings"> -->
 
     <div class="panel-left">				
 
@@ -38,7 +39,7 @@
             </div>
 
             <div class="settings-row">
-                <p>Diseño minimalista <i class="fa fa-info-circle ml-2 cursor-default text-muted" title="La sección 'DETALLES' se esconde y se invierten los colores de la sección 'TOTAL'"></i></p>
+                <p>Diseño minimalista <i v-if="showInfoIcons" class="fa fa-info-circle ml-2 cursor-default text-muted" title="La sección 'DETALLES' se esconde y se invierten los colores de la sección 'TOTAL'"></i></p>
 
                 <div class="ml-auto">
                     <div class="slider-toggle">
@@ -73,6 +74,34 @@
                         <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sliderToggleCheckboxes" 
                         v-on:click="toggleCheckboxes()">
                         <label class="onoffswitch-label" for="sliderToggleCheckboxes"></label>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="settings-row">
+
+                <span class="mr-2">Offset de cotizaciones</span>
+
+                <input class="form-control settings-input settings-input-narrow automatic" v-bind:class="{'d-none':isOffsetCustom}" 
+                        type="number" :value="currencyOffset" title="Offset automático" disabled>
+                
+                <input id="currencyOffsetInput" class="form-control settings-input settings-input-narrow" v-bind:class="{'d-none':!isOffsetCustom}" 
+                    type="number" :value="currencyOffset" title="Offset modificado"  
+                    v-on:change="onCurrencyOffsetModified($event)">
+
+                <span class="ml-1 mr-2">%</span>
+
+                <button v-if="showInfoIcons" class="btn-icon" data-toggle="modal" data-target="#infoModal" v-on:click="showInfoModal('#infoModalOffset')" title="Ver información sobre el offset de cotizaciones">
+                    <i class="fa fa-info-circle ml-2 cursor-default text-muted"></i>
+                </button> 
+                
+
+                <div class="ml-auto">
+                    <div class="slider-toggle">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sliderToggleOffset"
+                        v-on:click="toggleCurrencyOffset()">
+                        <label class="onoffswitch-label" for="sliderToggleOffset"></label>
                     </div>
                 </div>
                 

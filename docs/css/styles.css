@@ -333,6 +333,8 @@
         padding: 5px 0;
         text-align: center;
         box-shadow: none; }
+        #settings .settings-body .settings-row .settings-input.settings-input-narrow {
+          width: 50px; }
         #settings .settings-body .settings-row .settings-input.automatic {
           color: grey; }
         #settings .settings-body .settings-row .settings-input.input-error {

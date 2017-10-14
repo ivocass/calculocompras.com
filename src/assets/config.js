@@ -32,6 +32,7 @@ var Config = function (){
         this.currencies = [{id:'USD', name:'Dólar', val:17.19, lastUpdate:1503959578067}, {id:'EUR', name:'Euro', val:20.51, lastUpdate:1503959578067}, {id:'GBP', name:'Libra', val:22.24, lastUpdate:1503959578067}, {id:'ARS', name:'Peso', val:1, lastUpdate:1503959578067}];
         this.currencyQueryUrl = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20(%22{1}ARS%22)&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
         this.currencyUpdateInterval = 15 * 60 * 1000;
+        this.currencyOffset = 2;
         this.gestionCorreo = 120;
         this.defaultPurchase = 100;        
         this.valCompraMax = 200;
@@ -40,5 +41,6 @@ var Config = function (){
         this.runTests = false;
         this.loggerEnabled = true;
         this.loggerMaxEntries = 2000;
+        this.trackingEnabled = true;
         this.version = 0.114;
     };
