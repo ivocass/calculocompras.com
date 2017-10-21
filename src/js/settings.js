@@ -70,6 +70,11 @@ export default function Settings(){
         app.data.isOffsetCustom = isOffsetCustom;
         $('#sliderToggleOffset').prop('checked', !isOffsetCustom);
 
+        // it may be null, true, false
+        if(useFranchise === null) useFranchise = app.data.useFranchise; // set to default
+        app.data.useFranchise = useFranchise;
+        $('#sliderToggleFranchise').prop('checked', useFranchise);
+
         // restore custom offset if any and if valid
         if(isOffsetCustom){
             var currencyOffsetCustom = utils.getSavedItem('currencyOffsetCustom');
@@ -80,10 +85,6 @@ export default function Settings(){
             }
         }
         
-
-        if(useFranchise !== null && (useFranchise === true || useFranchise === false)){
-            app.data.useFranchise = useFranchise;
-        }
 
         app.saveSettingRequested.add(onSaveSettingRequested);
 

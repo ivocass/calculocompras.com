@@ -177,16 +177,18 @@ export default function Calculator(){
 
         switch(name){
             
-            case 'afip':
-                data.showAfip = !data.showAfip;
-            break;
+            // case 'afip':
+            //     data.showAfip = !data.showAfip;
+            // break;
             
-            case 'correo':
-                data.showCorreo = !data.showCorreo;
-            break;
+            // case 'correo':
+            //     data.showCorreo = !data.showCorreo;
+            // break;
             
             case 'franquicia':
                 data.useFranchise = !data.useFranchise;
+
+                $('#sliderToggleFranchise').prop('checked', data.useFranchise);
 
                 app.saveSettingRequested.dispatch({name:'useFranchise', value:data.useFranchise});
             break;

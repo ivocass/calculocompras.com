@@ -682,16 +682,18 @@ function Calculator() {
 
                 switch (name) {
 
-                        case 'afip':
-                                data.showAfip = !data.showAfip;
-                                break;
+                        // case 'afip':
+                        //     data.showAfip = !data.showAfip;
+                        // break;
 
-                        case 'correo':
-                                data.showCorreo = !data.showCorreo;
-                                break;
+                        // case 'correo':
+                        //     data.showCorreo = !data.showCorreo;
+                        // break;
 
                         case 'franquicia':
                                 data.useFranchise = !data.useFranchise;
+
+                                $('#sliderToggleFranchise').prop('checked', data.useFranchise);
 
                                 _app2.default.saveSettingRequested.dispatch({ name: 'useFranchise', value: data.useFranchise });
                                 break;
@@ -1721,6 +1723,11 @@ function Settings() {
         _app2.default.data.isOffsetCustom = isOffsetCustom;
         $('#sliderToggleOffset').prop('checked', !isOffsetCustom);
 
+        // it may be null, true, false
+        if (useFranchise === null) useFranchise = _app2.default.data.useFranchise; // set to default
+        _app2.default.data.useFranchise = useFranchise;
+        $('#sliderToggleFranchise').prop('checked', useFranchise);
+
         // restore custom offset if any and if valid
         if (isOffsetCustom) {
             var currencyOffsetCustom = _utils2.default.getSavedItem('currencyOffsetCustom');
@@ -1729,10 +1736,6 @@ function Settings() {
                 _app2.default.data.currencyOffset = currencyOffsetCustom;
                 $('#currencyOffsetInput').val(currencyOffsetCustom);
             }
-        }
-
-        if (useFranchise !== null && (useFranchise === true || useFranchise === false)) {
-            _app2.default.data.useFranchise = useFranchise;
         }
 
         _app2.default.saveSettingRequested.add(onSaveSettingRequested);

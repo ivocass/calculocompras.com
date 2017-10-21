@@ -59,7 +59,7 @@
 
                 <div class="d-flex mt-3">
 
-                    <div v-bind:class="{'d-none':!showCheckboxes}" class="flex-column checkboxes-column mr-2">
+                    <!-- <div v-bind:class="{'d-none':!showCheckboxes}" class="flex-column checkboxes-column mr-2">
                                
                         <div class="custom-checkbox" aria-label="Checkbox para la compra en pesos (deshabilitado por ser obligatorio)">
                             <input type="checkbox" id="cbox1" name="cc" :checked="showCompraPesos" disabled/>
@@ -97,18 +97,34 @@
                             </label>
                         </div>
                                 
-                    </div>							
+                    </div>							 -->
 
                     <div class="flex-column pl-0">
+
+                        <div class="d-flex">
+                                
+                            <span v-if="currency.getId() != 'ARS'" class="label">
+                                {{currency.getName()}}
+                            </span>
+
+                            <span v-if="currency.getId() == 'ARS'" class="label">
+                                Dólar
+                            </span>
+
+                        </div>
                         
                         <div class="d-flex">
                             
-                            <span v-if="currency.getId() != 'ARS'" id="label-pesos" class="label">
+                            <!-- <span v-if="currency.getId() != 'ARS'" id="label-pesos" class="label">
                                 Compra en pesos										
                             </span>
 
                             <span v-if="currency.getId() == 'ARS'" id="label-dolares" class="label">
                                 Compra en dólares										
+                            </span> -->
+
+                            <span class="label">
+                                Compra									
                             </span>
 
                         </div>
@@ -149,13 +165,43 @@
                     <div class="flex-column pl-0 price-col ml-2">
 
                         <ul>
+                            <li class="label">
+                                <span v-if="currency.getId() != 'ARS'">
+                                    ${{currency.getCurrentVal()}}<span v-if="currency.getHasCustomVal()" title="Valor modificado por el usuario">*</span>
+                                </span>
+    
+                                <span v-if="currency.getId() == 'ARS'">
+                                    ${{currencyUSD.getCurrentVal()}}
+                                </span>
+                            </li>
+
                             <li class="label" id="currency-conversion-text" v-bind:class="{invisible:!showCompraPesos}" aria-label="El monto de la compra expresada en pesos">{{valCurrencyConversionText}}</li>
                             <li class="label" id="price-afip" v-bind:class="{invisible:!showAfip}" title="50%" aria-label="El monto del tributo de AFIP">${{valAfip}}</li>
                             <li class="label" id="price-correo" v-bind:class="{invisible:!showCorreo}" aria-label="El monto de gestión de Correo Argentino">${{valCorreo}}</li>
                             <!-- <li class="label" id="price-franquicia" v-bind:class="{invisible:!useFranchise || !showAfip}" aria-label="El monto de la franquicia anual">${{valFranchiseDiscount}}</li> -->
-                        <ul>
 
-                    </div>
+                            <!-- list-style:none ml-10px -->
+                            <li class="label">
+                                <!-- <div class="custom-checkbox" aria-label="Seleccionar si querés que se aplique el descuento de la franquicia anual al impuesto de AFIP.">
+                                    <input type="checkbox" id="cbox4" name="cc" :checked="useFranchise" v-on:click="onLabelClicked('franquicia')"/>
+                                    <label for="cbox4">
+                                        <span class="background">
+                                            <i class="fa fa-check checkbox-check" aria-hidden="true"></i>
+                                        </span>
+                                    </label>
+                                </div> -->
+                                
+                                <div class="slider-toggle">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sliderToggleFranchise" 
+                                    v-on:click="onLabelClicked('franquicia')">
+                                    <label class="onoffswitch-label" for="sliderToggleFranchise"></label>
+                                </div>
+                                
+                            </li>
+                        </ul>
+                               
+
+                    </div>                  
 
                 </div>
 

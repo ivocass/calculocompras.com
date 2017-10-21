@@ -34,13 +34,13 @@ var Config = function (){
         this.currencyUpdateInterval = 15 * 60 * 1000;
         this.currencyOffset = 2;
         this.gestionCorreo = 120;
-        this.defaultPurchase = 100;        
+        this.defaultPurchase = 42;        
         this.valCompraMax = 200;
         this.valFranchise = 25;
         this.updateCurrency = true;
         this.runTests = false;
         this.loggerEnabled = true;
         this.loggerMaxEntries = 2000;
-        this.trackingEnabled = true;
+        this.trackingEnabled = false;
         this.version = 0.114;
     };

@@ -61,6 +61,21 @@
           font-size: 1.5rem;
         }
       }
+
+      .slider-toggle{
+
+        .onoffswitch-checkbox:checked + .onoffswitch-label {
+          background: #f0f0f0;
+        }
+        
+        .onoffswitch-checkbox:not(:checked) + .onoffswitch-label:before {
+          box-shadow: none;
+        }
+
+        .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+          background: white;
+        }
+      }
     }
 
     #section-total{
