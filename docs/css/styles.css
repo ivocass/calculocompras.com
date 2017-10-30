@@ -81,7 +81,7 @@
     display: flex;
     width: 100%;
     height: 100%; }
-    @media (max-width: 1360px) {
+    @media (max-width: 1150px) {
       #calculator .calculator-content {
         flex-direction: column; } }
     #calculator .calculator-content .main-section {
@@ -99,7 +99,7 @@
           margin-bottom: 0;
           letter-spacing: 18px;
           font-size: 2.5rem; }
-          @media (max-width: 1360px) {
+          @media (max-width: 1150px) {
             #calculator .calculator-content .main-section .title-area .title {
               font-size: 1.5rem; } }
       #calculator .calculator-content .main-section .content-area {
@@ -521,7 +521,7 @@ body {
       background: none;
       border: none;
       cursor: pointer; }
-      @media (max-width: 1360px) {
+      @media (max-width: 1150px) {
         #app #app-links button {
           color: white !important; } }
       #app #app-links button i {
