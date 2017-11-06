@@ -452,6 +452,7 @@ var App = function App() {
                     currencyManager.onCurrencySelected(e);
                 },
                 updateCurrency: function updateCurrency(id) {
+                    alert("El servicio de Yahoo Finance ha sido eliminado recientemente, \npor lo que la funcionalidad de actualización no estará disponible por unos días.");
                     currencyManager.updateCurrency(id);
                 },
 
@@ -1469,6 +1470,8 @@ var CurrencyUpdater = function CurrencyUpdater(id, queryUrl, onUpdateSuccessful,
             log('CurrencyUpdater() - req.onreadystatechange() - req.status:', req.status);
 
             if (req.status === 200) {
+
+                console.log('request:', req);
 
                 try {
                     var xmlDoc = _utils2.default.stringToXML(req.responseText);

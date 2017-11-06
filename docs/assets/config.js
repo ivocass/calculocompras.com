@@ -29,7 +29,7 @@ var Config = function (){
         this.colorLuminanceChange = 0.06;
         this.colors = [{name:'Emerald', hex:'#10c77b'}, {name:'Green', hex:'#3dba55'}, {name:'Gold', hex:'#cda20a'}, {name:'Rose', hex:'#d24d57'}, {name:'Red', hex:'#db3237'}, {name:'Violet', hex:'#7c54d0'}, {name:'Carbon', hex:'#252525'}, {name:'Material Blue', hex:'#4a84f0'}];
         this.defaultCurrencyId = 'USD';
-        this.currencies = [{id:'USD', name:'Dólar', val:17.19, lastUpdate:1503959578067}, {id:'EUR', name:'Euro', val:20.51, lastUpdate:1503959578067}, {id:'GBP', name:'Libra', val:22.24, lastUpdate:1503959578067}, {id:'ARS', name:'Peso', val:1, lastUpdate:1503959578067}];
+        this.currencies = [{id:'USD', name:'Dólar', val:17.70, lastUpdate:1510006039398}, {id:'EUR', name:'Euro', val:20.51, lastUpdate:1510006039398}, {id:'GBP', name:'Libra', val:23.23, lastUpdate:1510006039398}, {id:'ARS', name:'Peso', val:1, lastUpdate:1510006039398}];
         this.currencyQueryUrl = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20(%22{1}ARS%22)&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
         this.currencyUpdateInterval = 15 * 60 * 1000;
         this.currencyOffset = 2;

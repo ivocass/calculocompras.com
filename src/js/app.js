@@ -154,7 +154,10 @@ var App = function(){
 
             // currencyManager
             onCurrencySelected:function(e){currencyManager.onCurrencySelected(e)},
-            updateCurrency:function(id){currencyManager.updateCurrency(id)},
+            updateCurrency:function(id){
+                alert("El servicio de Yahoo Finance ha sido eliminado recientemente, \npor lo que la funcionalidad de actualización no estará disponible por unos días.")
+                currencyManager.updateCurrency(id)
+            },
 
             // calc
             onLabelClicked:function(name){calc.onLabelClicked(name)},

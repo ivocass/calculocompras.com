@@ -77,6 +77,9 @@ var CurrencyUpdater = function(id, queryUrl, onUpdateSuccessful, onUpdateError){
 
             if (req.status === 200) {
 
+
+                console.log('request:', req);
+
                 try {
                     var xmlDoc = utils.stringToXML(req.responseText);                    
                     var rate = xmlDoc.documentElement.getElementsByTagName('Rate')[0].childNodes[0].nodeValue;
