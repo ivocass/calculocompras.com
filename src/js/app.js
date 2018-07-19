@@ -125,6 +125,7 @@ var App = function(){
             infoModalTitle:'',
             valCompraMax:app.config.valCompraMax,
             isCompraOutOfRange:false,
+            isPurchaseExempt:app.config.defaultPurchase <= app.config.maxExemptionVal ? true : false,
             showingSettings:false,
             version:app.config.version
         },
@@ -155,7 +156,6 @@ var App = function(){
             // currencyManager
             onCurrencySelected:function(e){currencyManager.onCurrencySelected(e)},
             updateCurrency:function(id){
-                alert("El servicio de Yahoo Finance ha sido eliminado recientemente, \npor lo que la funcionalidad de actualización no estará disponible por unos días.")
                 currencyManager.updateCurrency(id)
             },
 

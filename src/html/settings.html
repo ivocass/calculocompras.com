@@ -124,7 +124,7 @@
 
                     <span class="ml-2" v-bind:class="{'d-none':currency.getHasCustomVal()}">
                         (automático -
-                        <a :href="'https://finance.yahoo.com/quote/' + currency.getId() + 'ars=x?ltr=1'" target="_blank" title="Yahoo Fianance">fuente</a>
+                        <a :href="'https://www.alphavantage.co/'" target="_blank" title="ALPHA VANTAGE">fuente</a>
                         )
                     </span>
 
@@ -149,7 +149,7 @@
                         {{currency.getLastUpdateDateReadable()}}
                     </span>
 
-                    <button v-if="!currency.getHasCustomVal()" class="btn btn-icon ml-1" title="Actualizar" v-on:click="updateCurrency(currency.getId())" aria-label="Click para actualizar el valor de la moneda con Yahoo Finance">
+                    <button v-if="!currency.getHasCustomVal()" class="btn btn-icon ml-1" title="Actualizar" v-on:click="updateCurrency(currency.getId())" aria-label="Click para actualizar el valor de la moneda">
                         <i class="fa fa-refresh currency-refresh" aria-hidden="true"></i>
                     </button>								
                 </p>

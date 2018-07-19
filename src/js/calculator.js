@@ -129,7 +129,7 @@ export default function Calculator(){
         }
 
         data.valCompra = Number(priceCompraInput.value);         
-
+        
         data.isCompraOutOfRange = getIsCompraOutOfRange();
 
         updateTotal();
@@ -137,38 +137,12 @@ export default function Calculator(){
 
     function mouseWheelListener(e){
 
-        if(data.showingSettings || !data.hasAcceptedTerms){
+        if(data.showingSettings || !data.hasAcceptedTerms){console.log('mouseWheelListener() RETURN');
             return;
         }
-        
-        let val = Number(priceCompraInput.value);
 
-        var step = 1;
-
-        if(e.shiftKey){
-            step = 10;
-        }
-        else
-        if(e.altKey){
-            step = 0.1;
-        }
-
-        if(e.deltaY < 0){
-            val += step;
-        }
-        else{
-            val -= step;
-        }
-
-        if(val < 0){
-            val = 0;
-        }
-
-        val = formatPrice(val);
-
-        priceCompraInput.value = val;
-
-        processNewCompraVal();
+        // wait until priceCompraInput renders the new value
+        setTimeout(processNewCompraVal, 100);
     }
 
     this.onLabelClicked = function(name){
@@ -262,16 +236,22 @@ export default function Calculator(){
 
         var currencyModifier = data.currency.getCurrentVal();   
         
+        // purchase in pesos
         var valPurchase = data.valCompra * currencyModifier;
 
-        var valAfip = valPurchase * 0.5;    
-        var valCorreo = app.config.gestionCorreo;
-        var valFranchisePesos = data.valFranchise * data.currencyUSD.getCurrentVal();
-        var valFranchiseDiscount = 0; // how much we subtract from valAfip if the franchise is used
+        // if current currency is in USD, just use valCompra, otherwise convert peso to dollar
+        var valPurchaseUSD = data.currency.getId('USD') ? data.valCompra : valPurchase * data.currencyUSD.getCurrentVal();
 
+        data.isPurchaseExempt = valPurchaseUSD <= app.config.maxExemptionVal ? true : false;
+
+        var valAfip = data.isPurchaseExempt ? 0 : valPurchase * 0.5;    
+        var valCorreo = data.isPurchaseExempt ? 0 : app.config.gestionCorreo;
+        var valFranchisePesos = data.valFranchise * data.currencyUSD.getCurrentVal();
+        
+        
         // According to AFIP: "El monto del tributo a abonar corresponde al 50% del excedente de la franquicia, 
         // siendo esta de U$S 25 a utilizarse en un solo envío y una vez por año calendario."
-        if(data.useFranchise){
+        if(data.useFranchise && !data.isPurchaseExempt){
 
             if(valPurchase <= valFranchisePesos){
                 valAfip = 0;
@@ -316,6 +296,7 @@ export default function Calculator(){
         log('Calculator - updateTotal() -', data.currency.getCurrentVal(), valPurchase, valAfip, valCorreo, valTotal);
     }
 
+    // TODO: update for maxExemptionVal
     function runTests(){
 
         console.log('<<<<<<<<<<<<<<<<< Calculator - runTests() - STARTED >>>>>>>>>>>>>>>>');

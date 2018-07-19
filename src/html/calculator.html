@@ -131,7 +131,7 @@
 
                         <div class="d-flex">
 
-                            <span id="label-afip" class="label" v-bind:class="{disabled:!showAfip}" title="50%">
+                            <span id="label-afip" class="label" v-bind:class="{disabled:!showAfip || isPurchaseExempt}" title="50%">
                                 Tributo AFIP											
                             </span>
 
@@ -141,7 +141,7 @@
                         
                         <div class="d-flex">
                             
-                            <span id="label-correo" class="label" v-bind:class="{disabled:!showCorreo}">
+                            <span id="label-correo" class="label" v-bind:class="{disabled:!showCorreo || isPurchaseExempt}">
                                 Gestión Correo										
                             </span>
                             
@@ -151,7 +151,7 @@
                         
                         <div class="d-flex">
 
-                            <span id="label-franquicia" class="label cursor-pointer no-select" v-bind:class="{disabled:!useFranchise || !showAfip}" v-on:click="onLabelClicked('franquicia')">
+                            <span id="label-franquicia" class="label cursor-pointer no-select" v-bind:class="{disabled:!useFranchise || !showAfip || isPurchaseExempt}" v-on:click="onLabelClicked('franquicia')">
                                 Franquicia anual							
                             </span>
 

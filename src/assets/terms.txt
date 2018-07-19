@@ -1,27 +1,27 @@
-1) Introducción:
-Las presentes condiciones generales regulan los términos y condiciones de acceso y uso de www.calculocompras.com (y sus extensiones para Chrome y Firefox)(de ahora en más "la app" y "esta app").
+1) Introducciï¿½n:
+Las presentes condiciones generales regulan los tï¿½rminos y condiciones de acceso y uso de www.calculocompras.com (y sus extensiones para Chrome y Firefox)(de ahora en mï¿½s "la app" y "esta app").
 
-2) Código fuente público:
-En https://github.com/ivocass/calculocompras.com usted puede ver todo el código y archivos utilizados por la app. 
+2) Cï¿½digo fuente pï¿½blico:
+En https://github.com/ivocass/calculocompras.com usted puede ver todo el cï¿½digo y archivos utilizados por la app. 
 La carpeta "docs" de la rama "master" contiene todo lo que se muestra en la app, ya que se utiliza GitHub Pages como hosting.
 
 3) Condiciones de uso:
-Esta app proporciona un estimado del costo final que puede tener una compra hecha con el régimen "Puerta a Puerta" de AFIP de Argentina (de ahora en más "el régimen").
-Para esto se utiliza la cotización de monedas extranjeras (actualizadas por cortesia de 'Yahoo Finance'), el valor del tributo de AFIP, el valor de la gestión de Correo Argentino y el valor de la franquicia anual de AFIP.
-La app puede tener valores desactualizados y/o errores en su programación que hagan que los montos expresados sean incorrectos.
-Se debe tener en cuenta además, que la app intenta utilizar la cotización de monedas extranjeras en tiempo real, mientras que los bancos suelen realizar la conversión de monedas en el momento de la liquidación de la tarjeta de crédito del comprador. Como consecuencia de esto, la cotización de la moneda muy probablemente sea distinta a la que se utilice en la app; o puede ocurrir que una compra que la app calcule que tenga un importe (total o parcial) inferior al límite de AFIP (U$S200 (este valor puede estar desactualizado)), luego supere ese límite debido a una nueva cotización de la moneda extranjera al momento en el que el producto sea gestionado por la aduana argentina.
-De manera similar, otros factores pueden hacer que la app proporcione valores erróneos, como el hecho de que el régimen puede cambiar sus condiciones (o ser eliminado por completo) y esta app puede quedar desactualizada y no reflejar esos cambios.
-Por estos motivos, el desarrollador de la app no se responsabiliza por cualquier pérdida financiera, daño moral o perjuicio alguno generado por el uso de la app o de cualquier programa generado a partir de su código fuente público.
-Se recomienda utilizar la app solo para conocer estimados, y se recomienda informarse debidamente sobre el régimen, los gastos y riesgos involucrados, y las gestiones correspondientes, al momento de importar un producto del exterior.
+Esta app proporciona un estimado del costo final que puede tener una compra hecha con el rï¿½gimen "Puerta a Puerta" de AFIP de Argentina (de ahora en mï¿½s "el rï¿½gimen").
+Para esto se utiliza la cotizaciï¿½n de monedas extranjeras (actualizadas por cortesia de 'ALPHA VANTAGE'), el valor del tributo de AFIP, el valor de la gestiï¿½n de Correo Argentino y el valor de la franquicia anual de AFIP.
+La app puede tener valores desactualizados y/o errores en su programaciï¿½n que hagan que los montos expresados sean incorrectos.
+Se debe tener en cuenta ademï¿½s, que la app intenta utilizar la cotizaciï¿½n de monedas extranjeras en tiempo real, mientras que los bancos suelen realizar la conversiï¿½n de monedas en el momento de la liquidaciï¿½n de la tarjeta de crï¿½dito del comprador. Como consecuencia de esto, la cotizaciï¿½n de la moneda muy probablemente sea distinta a la que se utilice en la app; o puede ocurrir que una compra que la app calcule que tenga un importe (total o parcial) inferior al lï¿½mite de AFIP (U$S200 (este valor puede estar desactualizado)), luego supere ese lï¿½mite debido a una nueva cotizaciï¿½n de la moneda extranjera al momento en el que el producto sea gestionado por la aduana argentina.
+De manera similar, otros factores pueden hacer que la app proporcione valores errï¿½neos, como el hecho de que el rï¿½gimen puede cambiar sus condiciones (o ser eliminado por completo) y esta app puede quedar desactualizada y no reflejar esos cambios.
+Por estos motivos, el desarrollador de la app no se responsabiliza por cualquier pï¿½rdida financiera, daï¿½o moral o perjuicio alguno generado por el uso de la app o de cualquier programa generado a partir de su cï¿½digo fuente pï¿½blico.
+Se recomienda utilizar la app solo para conocer estimados, y se recomienda informarse debidamente sobre el rï¿½gimen, los gastos y riesgos involucrados, y las gestiones correspondientes, al momento de importar un producto del exterior.
 Como alternativa a importar productos, usted puede comprar productos nacionales, comprar productos ya importados o gestionar compras con un importador registrado.
 
-4) Información recolectada:
-La app utiliza Google Analytics para reportar anónimamente tendencias de uso. No se utiliza información personal de los visitantes y la información reportada es mínima (ejemplos: "alguien visitó la app", "alguien prefiere el color azul", "alguien hizo click en el botón de Facebook").
-Puede revisar el código fuente público para conocer todos los detalles de la implementación.
+4) Informaciï¿½n recolectada:
+La app utiliza Google Analytics para reportar anï¿½nimamente tendencias de uso. No se utiliza informaciï¿½n personal de los visitantes y la informaciï¿½n reportada es mï¿½nima (ejemplos: "alguien visitï¿½ la app", "alguien prefiere el color azul", "alguien hizo click en el botï¿½n de Facebook").
+Puede revisar el cï¿½digo fuente pï¿½blico para conocer todos los detalles de la implementaciï¿½n.
 
 5) Modificaciones:
-El desarrollador de la app se reserva la facultad de modificar en cualquier momento las condiciones generales de uso de la app. En todo caso, se recomienda que consulte periódicamente los presentes términos de uso (disponible en la sección de configuración), ya que pueden ser modificados.
+El desarrollador de la app se reserva la facultad de modificar en cualquier momento las condiciones generales de uso de la app. En todo caso, se recomienda que consulte periï¿½dicamente los presentes tï¿½rminos de uso (disponible en la secciï¿½n de configuraciï¿½n), ya que pueden ser modificados.
 
-6) Conclusión:
-Solo utilice la app si usted entiende y está de acuerdo con estos términos y condiciones.
+6) Conclusiï¿½n:
+Solo utilice la app si usted entiende y estï¿½ de acuerdo con estos tï¿½rminos y condiciones.
 

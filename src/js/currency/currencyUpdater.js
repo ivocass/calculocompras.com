@@ -78,11 +78,13 @@ var CurrencyUpdater = function(id, queryUrl, onUpdateSuccessful, onUpdateError){
             if (req.status === 200) {
 
 
-                console.log('request:', req);
+                // console.log('request:', req);
 
                 try {
-                    var xmlDoc = utils.stringToXML(req.responseText);                    
-                    var rate = xmlDoc.documentElement.getElementsByTagName('Rate')[0].childNodes[0].nodeValue;
+
+                    let responseObj = JSON.parse(req.responseText);
+
+                    let rate = responseObj['Realtime Currency Exchange Rate']['5. Exchange Rate'];
 
                     if(!isNaN(rate) && rate > 0){
 
@@ -123,27 +125,14 @@ export default CurrencyUpdater;
 
 sample responseText
 
-<query xmlns:yahoo="http://www.yahooapis.com/v1/base.rng" yahoo:count="1" yahoo:created="2017-08-11T18:07:52Z" yahoo:lang="en-US">
-    <diagnostics>
-        <url execution-start-time="1" execution-stop-time="2" execution-time="1"><![CDATA[http://www.datatables.org/yahoo/finance/yahoo.finance.xchange.xml]]></url>
-        <publiclyCallable>true</publiclyCallable>
-        <cache execution-start-time="4" execution-stop-time="4" execution-time="0" method="GET" type="MEMCACHED"><![CDATA[e1b28fd8ab8a7bf21a52162f420f1447]]></cache>
-        <url execution-start-time="4" execution-stop-time="5" execution-time="1"><![CDATA[http://download.finance.yahoo.com/d/quotes.csv?s=USDARS=X&amp;f=snl1d1t1ab]]></url>
-        <query execution-start-time="4" execution-stop-time="5" execution-time="1"><![CDATA[select * from csv where url='http://download.finance.yahoo.com/d/quotes.csv?s=USDARS=X&amp;f=snl1d1t1ab' and columns='Symbol,Name,Rate,Date,Time,Ask,Bid']]></query>
-        <javascript execution-start-time="2" execution-stop-time="5" execution-time="2" instructions-used="18668" table-name="yahoo.finance.xchange" />
-        <user-time>6</user-time>
-        <service-time>2</service-time>
-        <build-version>2.0.164</build-version>
-    </diagnostics>
-    <results>
-        <rate id="USDARS">
-            <Name>USD/ARS</Name>
-            <Rate>17.7150</Rate>
-            <Date>8/11/2017</Date>
-            <Time>5:50pm</Time>
-            <Ask>17.7200</Ask>
-            <Bid>17.7150</Bid>
-        </rate>
-    </results>
-</query>
+ { 'Realtime Currency Exchange Rate':
+   { '1. From_Currency Code': 'USD',
+     '2. From_Currency Name': 'United States Dollar',
+     '3. To_Currency Code': 'ARS',
+     '4. To_Currency Name': 'Argentine Peso',
+     '5. Exchange Rate': '27.60950000',
+     '6. Last Refreshed': '2018-07-18 19:51:28',
+     '7. Time Zone': 'UTC' } 
+}
+
 */
