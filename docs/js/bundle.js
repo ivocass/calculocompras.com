@@ -388,6 +388,7 @@ var App = function App() {
                 infoModalTitle: '',
                 valCompraMax: _app2.default.config.valCompraMax,
                 isCompraOutOfRange: false,
+                isPurchaseExempt: _app2.default.config.defaultPurchase <= _app2.default.config.maxExemptionVal ? true : false,
                 showingSettings: false,
                 version: _app2.default.config.version
             },
@@ -452,7 +453,6 @@ var App = function App() {
                     currencyManager.onCurrencySelected(e);
                 },
                 updateCurrency: function updateCurrency(id) {
-                    alert("El servicio de Yahoo Finance ha sido eliminado recientemente, \npor lo que la funcionalidad de actualización no estará disponible por unos días.");
                     currencyManager.updateCurrency(id);
                 },
 
@@ -647,34 +647,12 @@ function Calculator() {
         function mouseWheelListener(e) {
 
                 if (data.showingSettings || !data.hasAcceptedTerms) {
+                        console.log('mouseWheelListener() RETURN');
                         return;
                 }
 
-                var val = Number(priceCompraInput.value);
-
-                var step = 1;
-
-                if (e.shiftKey) {
-                        step = 10;
-                } else if (e.altKey) {
-                        step = 0.1;
-                }
-
-                if (e.deltaY < 0) {
-                        val += step;
-                } else {
-                        val -= step;
-                }
-
-                if (val < 0) {
-                        val = 0;
-                }
-
-                val = formatPrice(val);
-
-                priceCompraInput.value = val;
-
-                processNewCompraVal();
+                // wait until priceCompraInput renders the new value
+                setTimeout(processNewCompraVal, 100);
         }
 
         this.onLabelClicked = function (name) {
@@ -765,16 +743,21 @@ function Calculator() {
 
                 var currencyModifier = data.currency.getCurrentVal();
 
+                // purchase in pesos
                 var valPurchase = data.valCompra * currencyModifier;
 
-                var valAfip = valPurchase * 0.5;
-                var valCorreo = _app2.default.config.gestionCorreo;
+                // if current currency is in USD, just use valCompra, otherwise convert peso to dollar
+                var valPurchaseUSD = data.currency.getId('USD') ? data.valCompra : valPurchase * data.currencyUSD.getCurrentVal();
+
+                data.isPurchaseExempt = valPurchaseUSD <= _app2.default.config.maxExemptionVal ? true : false;
+
+                var valAfip = data.isPurchaseExempt ? 0 : valPurchase * 0.5;
+                var valCorreo = data.isPurchaseExempt ? 0 : _app2.default.config.gestionCorreo;
                 var valFranchisePesos = data.valFranchise * data.currencyUSD.getCurrentVal();
-                var valFranchiseDiscount = 0; // how much we subtract from valAfip if the franchise is used
 
                 // According to AFIP: "El monto del tributo a abonar corresponde al 50% del excedente de la franquicia, 
                 // siendo esta de U$S 25 a utilizarse en un solo envío y una vez por año calendario."
-                if (data.useFranchise) {
+                if (data.useFranchise && !data.isPurchaseExempt) {
 
                         if (valPurchase <= valFranchisePesos) {
                                 valAfip = 0;
@@ -815,6 +798,7 @@ function Calculator() {
                 log('Calculator - updateTotal() -', data.currency.getCurrentVal(), valPurchase, valAfip, valCorreo, valTotal);
         }
 
+        // TODO: update for maxExemptionVal
         function runTests() {
 
                 console.log('<<<<<<<<<<<<<<<<< Calculator - runTests() - STARTED >>>>>>>>>>>>>>>>');
@@ -1471,11 +1455,13 @@ var CurrencyUpdater = function CurrencyUpdater(id, queryUrl, onUpdateSuccessful,
 
             if (req.status === 200) {
 
-                console.log('request:', req);
+                // console.log('request:', req);
 
                 try {
-                    var xmlDoc = _utils2.default.stringToXML(req.responseText);
-                    var rate = xmlDoc.documentElement.getElementsByTagName('Rate')[0].childNodes[0].nodeValue;
+
+                    var responseObj = JSON.parse(req.responseText);
+
+                    var rate = responseObj['Realtime Currency Exchange Rate']['5. Exchange Rate'];
 
                     if (!isNaN(rate) && rate > 0) {
 
@@ -1512,29 +1498,16 @@ exports.default = CurrencyUpdater;
 
 sample responseText
 
-<query xmlns:yahoo="http://www.yahooapis.com/v1/base.rng" yahoo:count="1" yahoo:created="2017-08-11T18:07:52Z" yahoo:lang="en-US">
-    <diagnostics>
-        <url execution-start-time="1" execution-stop-time="2" execution-time="1"><![CDATA[http://www.datatables.org/yahoo/finance/yahoo.finance.xchange.xml]]></url>
-        <publiclyCallable>true</publiclyCallable>
-        <cache execution-start-time="4" execution-stop-time="4" execution-time="0" method="GET" type="MEMCACHED"><![CDATA[e1b28fd8ab8a7bf21a52162f420f1447]]></cache>
-        <url execution-start-time="4" execution-stop-time="5" execution-time="1"><![CDATA[http://download.finance.yahoo.com/d/quotes.csv?s=USDARS=X&amp;f=snl1d1t1ab]]></url>
-        <query execution-start-time="4" execution-stop-time="5" execution-time="1"><![CDATA[select * from csv where url='http://download.finance.yahoo.com/d/quotes.csv?s=USDARS=X&amp;f=snl1d1t1ab' and columns='Symbol,Name,Rate,Date,Time,Ask,Bid']]></query>
-        <javascript execution-start-time="2" execution-stop-time="5" execution-time="2" instructions-used="18668" table-name="yahoo.finance.xchange" />
-        <user-time>6</user-time>
-        <service-time>2</service-time>
-        <build-version>2.0.164</build-version>
-    </diagnostics>
-    <results>
-        <rate id="USDARS">
-            <Name>USD/ARS</Name>
-            <Rate>17.7150</Rate>
-            <Date>8/11/2017</Date>
-            <Time>5:50pm</Time>
-            <Ask>17.7200</Ask>
-            <Bid>17.7150</Bid>
-        </rate>
-    </results>
-</query>
+ { 'Realtime Currency Exchange Rate':
+   { '1. From_Currency Code': 'USD',
+     '2. From_Currency Name': 'United States Dollar',
+     '3. To_Currency Code': 'ARS',
+     '4. To_Currency Name': 'Argentine Peso',
+     '5. Exchange Rate': '27.60950000',
+     '6. Last Refreshed': '2018-07-18 19:51:28',
+     '7. Time Zone': 'UTC' } 
+}
+
 */
 
 },{"../app":2,"../utils":11}],7:[function(require,module,exports){
